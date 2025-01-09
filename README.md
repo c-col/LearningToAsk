@@ -17,9 +17,9 @@ If you use pip, activate your environment and run:
 
 ## Bootstrapping 
 
-For creating the datasets for fine-tuning and Direct Preference Optimization (DPO), run:
+To create the datasets for fine-tuning and Direct Preference Optimization (DPO), insert the huggingface_login credential and the path to save HF models and datasets in lines 385-386 of ```bootstrapping.py```. Then run it:
 
    ```bash
-   python scripts/bootstrapping.py 
+   python bootstrapping.py 
    ```
 This will populate the ```data/bootstrapped``` folder and create a HuggingFace dataset that will be used for DPO ([DPO dataset](https://huggingface.co/datasets/mazzaqq/LearningToAsk_DPO_contrast_sets) used in the paper).
