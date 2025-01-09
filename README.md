@@ -22,4 +22,4 @@ For creating the datasets for fine-tuning and Direct Preference Optimization (DP
    ```bash
    python scripts/bootstrapping.py 
    ```
-This will populate the ```data/bootstrapped``` and create a HuggingFace dataset that will be used for DPO ([DPO dataset used in the paper](https://huggingface.co/datasets/mazzaqq/LearningToAsk_DPO_contrast_sets)
+This will populate the ```data/bootstrapped``` folder and create a HuggingFace dataset that will be used for DPO ([DPO dataset used in the paper](https://huggingface.co/datasets/mazzaqq/LearningToAsk_DPO_contrast_sets))
