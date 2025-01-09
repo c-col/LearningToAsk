@@ -29,7 +29,7 @@ If you find it useful, you can cite our paper as:
 
 ```
 @inproceedings{mazzaccara2024learningtoask,
-    title = "Learning to Ask Informative Questions: Enhancing {LLM}s with Preference Optimization and Expected Information Gain",
+    title = "Learning to Ask Informative Questions: Enhancing LLMs with Preference Optimization and Expected Information Gain",
     author = "Mazzaccara, Davide  and
       Testoni, Alberto  and
       Bernardi, Raffaella",
