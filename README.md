@@ -1,5 +1,5 @@
-# LearningToAsk
-Code for the paper "Learning to Ask Informative Questions: Enhancing LLMs with Preference Optimization and Expected Information Gain"
+# Learning to Ask Informative Questions: Enhancing LLMs with Preference Optimization and Expected Information Gain
+Code for the EMNLP 2024 paper (Findings).
 
 ## Setup
 
@@ -23,3 +23,18 @@ To create the datasets for fine-tuning and Direct Preference Optimization (DPO),
    python bootstrapping.py 
    ```
 This will populate the ```data/bootstrapped``` folder and create a HuggingFace dataset that will be used for DPO ([DPO dataset](https://huggingface.co/datasets/mazzaqq/LearningToAsk_DPO_contrast_sets) used in the paper).
+
+## Citation
+If you find it useful, you can cite our paper as: 
+
+```
+@inproceedings{mazzaccara-etal-2024-learning,
+    title = "Learning to Ask Informative Questions: Enhancing {LLM}s with Preference Optimization and Expected Information Gain",
+    author = "Mazzaccara, Davide  and
+      Testoni, Alberto  and
+      Bernardi, Raffaella",
+    booktitle = "Findings of the Association for Computational Linguistics: EMNLP 2024",
+    year = "2024",
+    url = "https://aclanthology.org/2024.findings-emnlp.291/",
+}
+```
