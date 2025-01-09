@@ -1,0 +1,1172 @@
+{
+    "0": {
+        "items": [
+            "contentment",
+            "hopefulness",
+            "disgust",
+            "positive sum game",
+            "jealousy",
+            "representative democracy",
+            "surprise",
+            "anger"
+        ],
+        "target": "jealousy"
+    },
+    "1": {
+        "items": [
+            "representative democracy",
+            "disgust",
+            "jealousy",
+            "anger",
+            "hopefulness",
+            "positive sum game",
+            "contentment",
+            "phase transition"
+        ],
+        "target": "contentment"
+    },
+    "2": {
+        "items": [
+            "contentment",
+            "phase transition",
+            "jealousy",
+            "representative democracy",
+            "surprise",
+            "love",
+            "disgust",
+            "positive sum game"
+        ],
+        "target": "jealousy"
+    },
+    "3": {
+        "items": [
+            "representative democracy",
+            "hate",
+            "disgust",
+            "love",
+            "contentment",
+            "hopefulness",
+            "jealousy",
+            "phase transition"
+        ],
+        "target": "hopefulness"
+    },
+    "4": {
+        "items": [
+            "positive sum game",
+            "love",
+            "jealousy",
+            "phase transition",
+            "hopefulness",
+            "surprise",
+            "global poverty",
+            "contentment"
+        ],
+        "target": "hopefulness"
+    },
+    "5": {
+        "items": [
+            "contentment",
+            "hopefulness",
+            "disgust",
+            "surprise",
+            "jealousy",
+            "global poverty",
+            "beauty",
+            "hate"
+        ],
+        "target": "contentment"
+    },
+    "6": {
+        "items": [
+            "love",
+            "hate",
+            "jealousy",
+            "phase transition",
+            "contentment",
+            "representative democracy",
+            "beauty",
+            "hopefulness"
+        ],
+        "target": "phase transition"
+    },
+    "7": {
+        "items": [
+            "positive sum game",
+            "beauty",
+            "surprise",
+            "love",
+            "jealousy",
+            "phase transition",
+            "hopefulness",
+            "representative democracy"
+        ],
+        "target": "hopefulness"
+    },
+    "8": {
+        "items": [
+            "disgust",
+            "global poverty",
+            "representative democracy",
+            "hate",
+            "beauty",
+            "positive sum game",
+            "contentment",
+            "love"
+        ],
+        "target": "global poverty"
+    },
+    "9": {
+        "items": [
+            "contentment",
+            "love",
+            "jealousy",
+            "beauty",
+            "anger",
+            "global poverty",
+            "surprise",
+            "phase transition"
+        ],
+        "target": "phase transition"
+    },
+    "10": {
+        "items": [
+            "hopefulness",
+            "beauty",
+            "phase transition",
+            "love",
+            "contentment",
+            "jealousy",
+            "representative democracy",
+            "global poverty"
+        ],
+        "target": "contentment"
+    },
+    "11": {
+        "items": [
+            "phase transition",
+            "surprise",
+            "positive sum game",
+            "anger",
+            "representative democracy",
+            "hopefulness",
+            "global poverty",
+            "contentment"
+        ],
+        "target": "surprise"
+    },
+    "12": {
+        "items": [
+            "global poverty",
+            "hate",
+            "positive sum game",
+            "jealousy",
+            "surprise",
+            "beauty",
+            "phase transition",
+            "anger"
+        ],
+        "target": "surprise"
+    },
+    "13": {
+        "items": [
+            "love",
+            "hate",
+            "phase transition",
+            "contentment",
+            "hopefulness",
+            "jealousy",
+            "surprise",
+            "disgust"
+        ],
+        "target": "hate"
+    },
+    "14": {
+        "items": [
+            "hopefulness",
+            "love",
+            "hate",
+            "surprise",
+            "anger",
+            "contentment",
+            "positive sum game",
+            "jealousy"
+        ],
+        "target": "jealousy"
+    },
+    "15": {
+        "items": [
+            "disgust",
+            "phase transition",
+            "love",
+            "beauty",
+            "global poverty",
+            "surprise",
+            "contentment",
+            "hate"
+        ],
+        "target": "global poverty"
+    },
+    "16": {
+        "items": [
+            "surprise",
+            "phase transition",
+            "beauty",
+            "contentment",
+            "positive sum game",
+            "anger",
+            "hopefulness",
+            "global poverty"
+        ],
+        "target": "surprise"
+    },
+    "17": {
+        "items": [
+            "phase transition",
+            "anger",
+            "positive sum game",
+            "contentment",
+            "love",
+            "hopefulness",
+            "global poverty",
+            "representative democracy"
+        ],
+        "target": "phase transition"
+    },
+    "18": {
+        "items": [
+            "phase transition",
+            "contentment",
+            "positive sum game",
+            "surprise",
+            "representative democracy",
+            "disgust",
+            "hopefulness",
+            "love"
+        ],
+        "target": "positive sum game"
+    },
+    "19": {
+        "items": [
+            "surprise",
+            "disgust",
+            "hopefulness",
+            "anger",
+            "jealousy",
+            "phase transition",
+            "contentment",
+            "hate"
+        ],
+        "target": "surprise"
+    },
+    "20": {
+        "items": [
+            "global poverty",
+            "anger",
+            "contentment",
+            "love",
+            "disgust",
+            "representative democracy",
+            "hate",
+            "surprise"
+        ],
+        "target": "representative democracy"
+    },
+    "21": {
+        "items": [
+            "disgust",
+            "beauty",
+            "jealousy",
+            "positive sum game",
+            "representative democracy",
+            "phase transition",
+            "anger",
+            "global poverty"
+        ],
+        "target": "beauty"
+    },
+    "22": {
+        "items": [
+            "disgust",
+            "positive sum game",
+            "hate",
+            "beauty",
+            "surprise",
+            "jealousy",
+            "love",
+            "contentment"
+        ],
+        "target": "jealousy"
+    },
+    "23": {
+        "items": [
+            "jealousy",
+            "phase transition",
+            "anger",
+            "hate",
+            "representative democracy",
+            "beauty",
+            "hopefulness",
+            "love"
+        ],
+        "target": "phase transition"
+    },
+    "24": {
+        "items": [
+            "positive sum game",
+            "beauty",
+            "global poverty",
+            "phase transition",
+            "anger",
+            "surprise",
+            "love",
+            "hopefulness"
+        ],
+        "target": "positive sum game"
+    },
+    "25": {
+        "items": [
+            "phase transition",
+            "love",
+            "positive sum game",
+            "anger",
+            "surprise",
+            "beauty",
+            "representative democracy",
+            "hate"
+        ],
+        "target": "positive sum game"
+    },
+    "26": {
+        "items": [
+            "representative democracy",
+            "beauty",
+            "jealousy",
+            "contentment",
+            "positive sum game",
+            "global poverty",
+            "anger",
+            "hate"
+        ],
+        "target": "contentment"
+    },
+    "27": {
+        "items": [
+            "hopefulness",
+            "surprise",
+            "hate",
+            "representative democracy",
+            "anger",
+            "global poverty",
+            "positive sum game",
+            "disgust"
+        ],
+        "target": "hopefulness"
+    },
+    "28": {
+        "items": [
+            "love",
+            "phase transition",
+            "anger",
+            "disgust",
+            "hopefulness",
+            "global poverty",
+            "beauty",
+            "positive sum game"
+        ],
+        "target": "hopefulness"
+    },
+    "29": {
+        "items": [
+            "hate",
+            "contentment",
+            "love",
+            "representative democracy",
+            "disgust",
+            "surprise",
+            "positive sum game",
+            "anger"
+        ],
+        "target": "love"
+    },
+    "30": {
+        "items": [
+            "beauty",
+            "anger",
+            "love",
+            "contentment",
+            "representative democracy",
+            "surprise",
+            "jealousy",
+            "global poverty"
+        ],
+        "target": "representative democracy"
+    },
+    "31": {
+        "items": [
+            "hate",
+            "hopefulness",
+            "beauty",
+            "surprise",
+            "contentment",
+            "global poverty",
+            "jealousy",
+            "phase transition"
+        ],
+        "target": "surprise"
+    },
+    "32": {
+        "items": [
+            "hopefulness",
+            "jealousy",
+            "positive sum game",
+            "global poverty",
+            "disgust",
+            "hate",
+            "love",
+            "phase transition"
+        ],
+        "target": "hopefulness"
+    },
+    "33": {
+        "items": [
+            "hopefulness",
+            "beauty",
+            "contentment",
+            "phase transition",
+            "hate",
+            "global poverty",
+            "anger",
+            "representative democracy"
+        ],
+        "target": "hate"
+    },
+    "34": {
+        "items": [
+            "phase transition",
+            "positive sum game",
+            "hate",
+            "contentment",
+            "love",
+            "representative democracy",
+            "global poverty",
+            "jealousy"
+        ],
+        "target": "representative democracy"
+    },
+    "35": {
+        "items": [
+            "phase transition",
+            "contentment",
+            "positive sum game",
+            "representative democracy",
+            "global poverty",
+            "love",
+            "beauty",
+            "hate"
+        ],
+        "target": "global poverty"
+    },
+    "36": {
+        "items": [
+            "representative democracy",
+            "global poverty",
+            "hate",
+            "love",
+            "anger",
+            "phase transition",
+            "disgust",
+            "positive sum game"
+        ],
+        "target": "anger"
+    },
+    "37": {
+        "items": [
+            "global poverty",
+            "love",
+            "disgust",
+            "representative democracy",
+            "phase transition",
+            "surprise",
+            "anger",
+            "positive sum game"
+        ],
+        "target": "phase transition"
+    },
+    "38": {
+        "items": [
+            "beauty",
+            "hate",
+            "anger",
+            "surprise",
+            "phase transition",
+            "love",
+            "representative democracy",
+            "jealousy"
+        ],
+        "target": "surprise"
+    },
+    "39": {
+        "items": [
+            "love",
+            "anger",
+            "jealousy",
+            "positive sum game",
+            "disgust",
+            "global poverty",
+            "contentment",
+            "phase transition"
+        ],
+        "target": "jealousy"
+    },
+    "40": {
+        "items": [
+            "global poverty",
+            "jealousy",
+            "hopefulness",
+            "contentment",
+            "representative democracy",
+            "surprise",
+            "disgust",
+            "beauty"
+        ],
+        "target": "contentment"
+    },
+    "41": {
+        "items": [
+            "hopefulness",
+            "contentment",
+            "disgust",
+            "love",
+            "jealousy",
+            "anger",
+            "surprise",
+            "hate"
+        ],
+        "target": "jealousy"
+    },
+    "42": {
+        "items": [
+            "jealousy",
+            "hate",
+            "anger",
+            "representative democracy",
+            "surprise",
+            "hopefulness",
+            "beauty",
+            "love"
+        ],
+        "target": "representative democracy"
+    },
+    "43": {
+        "items": [
+            "love",
+            "global poverty",
+            "representative democracy",
+            "hate",
+            "contentment",
+            "anger",
+            "disgust",
+            "positive sum game"
+        ],
+        "target": "contentment"
+    },
+    "44": {
+        "items": [
+            "phase transition",
+            "hopefulness",
+            "love",
+            "jealousy",
+            "disgust",
+            "beauty",
+            "hate",
+            "anger"
+        ],
+        "target": "anger"
+    },
+    "45": {
+        "items": [
+            "positive sum game",
+            "phase transition",
+            "jealousy",
+            "anger",
+            "representative democracy",
+            "hate",
+            "disgust",
+            "global poverty"
+        ],
+        "target": "hate"
+    },
+    "46": {
+        "items": [
+            "jealousy",
+            "global poverty",
+            "phase transition",
+            "love",
+            "disgust",
+            "beauty",
+            "surprise",
+            "anger"
+        ],
+        "target": "disgust"
+    },
+    "47": {
+        "items": [
+            "representative democracy",
+            "hopefulness",
+            "jealousy",
+            "positive sum game",
+            "disgust",
+            "contentment",
+            "phase transition",
+            "beauty"
+        ],
+        "target": "disgust"
+    },
+    "48": {
+        "items": [
+            "beauty",
+            "surprise",
+            "love",
+            "global poverty",
+            "representative democracy",
+            "hate",
+            "positive sum game",
+            "anger"
+        ],
+        "target": "hate"
+    },
+    "49": {
+        "items": [
+            "phase transition",
+            "surprise",
+            "positive sum game",
+            "global poverty",
+            "jealousy",
+            "anger",
+            "hate",
+            "hopefulness"
+        ],
+        "target": "phase transition"
+    },
+    "50": {
+        "items": [
+            "phase transition",
+            "global poverty",
+            "hopefulness",
+            "representative democracy",
+            "love",
+            "disgust",
+            "contentment",
+            "anger"
+        ],
+        "target": "disgust"
+    },
+    "51": {
+        "items": [
+            "love",
+            "jealousy",
+            "global poverty",
+            "surprise",
+            "representative democracy",
+            "phase transition",
+            "positive sum game",
+            "disgust"
+        ],
+        "target": "surprise"
+    },
+    "52": {
+        "items": [
+            "disgust",
+            "contentment",
+            "representative democracy",
+            "beauty",
+            "anger",
+            "hopefulness",
+            "global poverty",
+            "jealousy"
+        ],
+        "target": "jealousy"
+    },
+    "53": {
+        "items": [
+            "hopefulness",
+            "global poverty",
+            "jealousy",
+            "hate",
+            "phase transition",
+            "disgust",
+            "beauty",
+            "positive sum game"
+        ],
+        "target": "positive sum game"
+    },
+    "54": {
+        "items": [
+            "hate",
+            "surprise",
+            "anger",
+            "jealousy",
+            "disgust",
+            "love",
+            "positive sum game",
+            "global poverty"
+        ],
+        "target": "disgust"
+    },
+    "55": {
+        "items": [
+            "positive sum game",
+            "beauty",
+            "hate",
+            "contentment",
+            "anger",
+            "love",
+            "representative democracy",
+            "phase transition"
+        ],
+        "target": "positive sum game"
+    },
+    "56": {
+        "items": [
+            "hate",
+            "love",
+            "beauty",
+            "global poverty",
+            "jealousy",
+            "anger",
+            "contentment",
+            "hopefulness"
+        ],
+        "target": "global poverty"
+    },
+    "57": {
+        "items": [
+            "positive sum game",
+            "global poverty",
+            "disgust",
+            "hate",
+            "hopefulness",
+            "beauty",
+            "phase transition",
+            "anger"
+        ],
+        "target": "positive sum game"
+    },
+    "58": {
+        "items": [
+            "surprise",
+            "hopefulness",
+            "anger",
+            "jealousy",
+            "phase transition",
+            "disgust",
+            "positive sum game",
+            "beauty"
+        ],
+        "target": "jealousy"
+    },
+    "59": {
+        "items": [
+            "global poverty",
+            "hate",
+            "contentment",
+            "hopefulness",
+            "jealousy",
+            "anger",
+            "representative democracy",
+            "positive sum game"
+        ],
+        "target": "contentment"
+    },
+    "60": {
+        "items": [
+            "phase transition",
+            "surprise",
+            "anger",
+            "disgust",
+            "hate",
+            "beauty",
+            "representative democracy",
+            "hopefulness"
+        ],
+        "target": "surprise"
+    },
+    "61": {
+        "items": [
+            "beauty",
+            "positive sum game",
+            "surprise",
+            "global poverty",
+            "jealousy",
+            "hopefulness",
+            "contentment",
+            "disgust"
+        ],
+        "target": "disgust"
+    },
+    "62": {
+        "items": [
+            "hate",
+            "contentment",
+            "hopefulness",
+            "phase transition",
+            "surprise",
+            "positive sum game",
+            "representative democracy",
+            "disgust"
+        ],
+        "target": "surprise"
+    },
+    "63": {
+        "items": [
+            "surprise",
+            "beauty",
+            "hate",
+            "jealousy",
+            "positive sum game",
+            "contentment",
+            "phase transition",
+            "representative democracy"
+        ],
+        "target": "jealousy"
+    },
+    "64": {
+        "items": [
+            "phase transition",
+            "global poverty",
+            "anger",
+            "contentment",
+            "beauty",
+            "disgust",
+            "hate",
+            "jealousy"
+        ],
+        "target": "contentment"
+    },
+    "65": {
+        "items": [
+            "beauty",
+            "love",
+            "anger",
+            "disgust",
+            "global poverty",
+            "hate",
+            "jealousy",
+            "hopefulness"
+        ],
+        "target": "anger"
+    },
+    "66": {
+        "items": [
+            "hate",
+            "contentment",
+            "jealousy",
+            "representative democracy",
+            "surprise",
+            "anger",
+            "disgust",
+            "positive sum game"
+        ],
+        "target": "positive sum game"
+    },
+    "67": {
+        "items": [
+            "phase transition",
+            "representative democracy",
+            "hopefulness",
+            "disgust",
+            "contentment",
+            "global poverty",
+            "positive sum game",
+            "beauty"
+        ],
+        "target": "representative democracy"
+    },
+    "68": {
+        "items": [
+            "anger",
+            "love",
+            "beauty",
+            "surprise",
+            "jealousy",
+            "hopefulness",
+            "hate",
+            "disgust"
+        ],
+        "target": "jealousy"
+    },
+    "69": {
+        "items": [
+            "phase transition",
+            "contentment",
+            "disgust",
+            "surprise",
+            "jealousy",
+            "representative democracy",
+            "anger",
+            "global poverty"
+        ],
+        "target": "disgust"
+    },
+    "70": {
+        "items": [
+            "phase transition",
+            "representative democracy",
+            "disgust",
+            "beauty",
+            "hate",
+            "global poverty",
+            "contentment",
+            "surprise"
+        ],
+        "target": "representative democracy"
+    },
+    "71": {
+        "items": [
+            "representative democracy",
+            "surprise",
+            "anger",
+            "disgust",
+            "global poverty",
+            "beauty",
+            "positive sum game",
+            "hate"
+        ],
+        "target": "disgust"
+    },
+    "72": {
+        "items": [
+            "surprise",
+            "phase transition",
+            "representative democracy",
+            "positive sum game",
+            "anger",
+            "jealousy",
+            "hopefulness",
+            "contentment"
+        ],
+        "target": "positive sum game"
+    },
+    "73": {
+        "items": [
+            "beauty",
+            "phase transition",
+            "hopefulness",
+            "representative democracy",
+            "surprise",
+            "disgust",
+            "contentment",
+            "jealousy"
+        ],
+        "target": "beauty"
+    },
+    "74": {
+        "items": [
+            "anger",
+            "hate",
+            "jealousy",
+            "global poverty",
+            "contentment",
+            "representative democracy",
+            "positive sum game",
+            "love"
+        ],
+        "target": "positive sum game"
+    },
+    "75": {
+        "items": [
+            "representative democracy",
+            "contentment",
+            "surprise",
+            "disgust",
+            "anger",
+            "hopefulness",
+            "phase transition",
+            "love"
+        ],
+        "target": "representative democracy"
+    },
+    "76": {
+        "items": [
+            "surprise",
+            "beauty",
+            "contentment",
+            "anger",
+            "positive sum game",
+            "disgust",
+            "hate",
+            "representative democracy"
+        ],
+        "target": "hate"
+    },
+    "77": {
+        "items": [
+            "anger",
+            "hopefulness",
+            "beauty",
+            "positive sum game",
+            "surprise",
+            "phase transition",
+            "disgust",
+            "hate"
+        ],
+        "target": "phase transition"
+    },
+    "78": {
+        "items": [
+            "global poverty",
+            "disgust",
+            "love",
+            "surprise",
+            "phase transition",
+            "beauty",
+            "representative democracy",
+            "jealousy"
+        ],
+        "target": "beauty"
+    },
+    "79": {
+        "items": [
+            "phase transition",
+            "beauty",
+            "love",
+            "hate",
+            "surprise",
+            "jealousy",
+            "hopefulness",
+            "anger"
+        ],
+        "target": "surprise"
+    },
+    "80": {
+        "items": [
+            "jealousy",
+            "phase transition",
+            "love",
+            "surprise",
+            "positive sum game",
+            "anger",
+            "contentment",
+            "hate"
+        ],
+        "target": "love"
+    },
+    "81": {
+        "items": [
+            "global poverty",
+            "representative democracy",
+            "anger",
+            "hopefulness",
+            "phase transition",
+            "jealousy",
+            "disgust",
+            "contentment"
+        ],
+        "target": "phase transition"
+    },
+    "82": {
+        "items": [
+            "disgust",
+            "global poverty",
+            "phase transition",
+            "representative democracy",
+            "positive sum game",
+            "surprise",
+            "hate",
+            "contentment"
+        ],
+        "target": "representative democracy"
+    },
+    "83": {
+        "items": [
+            "jealousy",
+            "representative democracy",
+            "hopefulness",
+            "positive sum game",
+            "surprise",
+            "love",
+            "anger",
+            "phase transition"
+        ],
+        "target": "love"
+    },
+    "84": {
+        "items": [
+            "positive sum game",
+            "beauty",
+            "phase transition",
+            "anger",
+            "disgust",
+            "jealousy",
+            "hopefulness",
+            "representative democracy"
+        ],
+        "target": "anger"
+    },
+    "85": {
+        "items": [
+            "hate",
+            "phase transition",
+            "representative democracy",
+            "hopefulness",
+            "positive sum game",
+            "global poverty",
+            "contentment",
+            "surprise"
+        ],
+        "target": "global poverty"
+    },
+    "86": {
+        "items": [
+            "global poverty",
+            "surprise",
+            "positive sum game",
+            "disgust",
+            "hopefulness",
+            "phase transition",
+            "beauty",
+            "contentment"
+        ],
+        "target": "beauty"
+    },
+    "87": {
+        "items": [
+            "representative democracy",
+            "beauty",
+            "global poverty",
+            "phase transition",
+            "positive sum game",
+            "love",
+            "surprise",
+            "anger"
+        ],
+        "target": "surprise"
+    },
+    "88": {
+        "items": [
+            "disgust",
+            "positive sum game",
+            "love",
+            "representative democracy",
+            "jealousy",
+            "contentment",
+            "global poverty",
+            "anger"
+        ],
+        "target": "global poverty"
+    },
+    "89": {
+        "items": [
+            "hate",
+            "global poverty",
+            "contentment",
+            "surprise",
+            "jealousy",
+            "representative democracy",
+            "phase transition",
+            "beauty"
+        ],
+        "target": "beauty"
+    }
+}

@@ -1,0 +1,28 @@
+{
+  "0": {
+    "items": [
+      "stove",
+      "violin",
+      "kettle",
+      "harp",
+      "oven",
+      "drum",
+      "bagpipe",
+      "blender"
+    ],
+    "target": "oven"
+  },
+  "1": {
+    "items": [
+      "hoe",
+      "clamp",
+      "chisel",
+      "sofa",
+      "chair",
+      "spade",
+      "dresser",
+      "couch"
+    ],
+    "target": "chisel"
+  }
+}

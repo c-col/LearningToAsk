@@ -354,4 +354,4 @@ dependencies:
       - webencodings==0.5.1
       - websocket-client==1.7.0
       - widgetsnbextension==4.0.9
-prefix: /miniconda3/envs/20q-llm
+prefix: /home/davide.mazzaccara/miniconda3/envs/20q_CLONE_2
