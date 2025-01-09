@@ -26,10 +26,6 @@ This will populate the ```data/bootstrapped``` folder and create a HuggingFace d
 
 ## Training
 
-### SFT
-
-### DPO
-
 ## Evaluation
 
 ## Citation
