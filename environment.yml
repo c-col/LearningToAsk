@@ -1,4 +1,4 @@
-name: 20q_restored
+name: 20q-llm_env
 channels:
   - huggingface
   - pytorch
@@ -354,4 +354,4 @@ dependencies:
       - webencodings==0.5.1
       - websocket-client==1.7.0
       - widgetsnbextension==4.0.9
-prefix: /home/davide.mazzaccara/miniconda3/envs/20q_CLONE_2
+prefix: /home/miniconda3/envs/20q-llm_env
