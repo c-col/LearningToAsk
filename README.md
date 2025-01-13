@@ -9,7 +9,7 @@ If you use conda, create the environment for this project running:
    conda env create -f environment.yml
    ```
 
-If you use pip, activate your environment and run: 
+If you use venv, activate your environment and run: 
 
    ```bash
    pip install -r requirements.txt
