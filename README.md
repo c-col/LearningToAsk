@@ -20,11 +20,17 @@ If you use venv, activate your environment and run:
 To create the datasets for Supervised Fine-Tuning (SFT) and Direct Preference Optimization (DPO), insert the huggingface_login credential and the path to save HF models and datasets in lines 385-386 of ```bootstrapping.py```. Then run it:
 
    ```bash
-   python bootstrapping.py 
+   python scripts/bootstrapping.py 
    ```
 This will populate the ```data/bootstrapped``` folder and create a HuggingFace dataset that will be used for DPO ([DPO dataset](https://huggingface.co/datasets/mazzaqq/LearningToAsk_DPO_contrast_sets) used in the paper).
 
 ## Training
+
+For training the base model with SFT, insert the ```cache_dir``` and ```output_dir``` and run: 
+
+   ```bash
+   python scripts/SFT.py 
+   ```
 
 ## Evaluation
 
