@@ -33,7 +33,15 @@ For training the base model with SFT, insert the ```cache_dir``` and ```output_d
    python scripts/SFT.py 
    ```
 
-At the development time, the best-performing checkpoints for the SFT model are after 4k samples ([SFT adapter](https://huggingface.co/mazzaqq/SFT_4000/settings))
+The best-performing checkpoints for the SFT model are after 4k samples ([SFT adapter](https://huggingface.co/mazzaqq/SFT_4000/settings)).
+
+### DPO
+For training the base model with DPO, insert the ```cache_dir```, ```output_dir``` and ```huggingface_login``` and run:
+
+   ```bash
+   python scripts/SFT.py 
+   ```
+The trained DPO model is in HuggingFace Hub ([DPO adapter](https://huggingface.co/mazzaqq/DPO_davide)).
 
 ## Evaluation
 
