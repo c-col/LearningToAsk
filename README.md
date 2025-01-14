@@ -39,7 +39,7 @@ The best-performing checkpoints for the SFT model are after 4k samples ([SFT ada
 Insert the ```cache_dir```, ```output_dir``` and ```huggingface_login```. Then run for DPO training:
 
    ```bash
-   python scripts/SFT.py 
+   python scripts/DPO.py 
    ```
 The trained DPO model is in HuggingFace Hub ([DPO adapter](https://huggingface.co/mazzaqq/DPO_davide)).
 
