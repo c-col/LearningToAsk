@@ -33,7 +33,7 @@ For training the base model with SFT, insert the ```cache_dir``` and ```output_d
    python scripts/SFT.py 
    ```
 
-At the development time, the best-performing checkpoints for the SFT model are after 4k samples [SFT adapter](https://huggingface.co/mazzaqq/SFT_4000/settings)
+At the development time, the best-performing checkpoints for the SFT model are after 4k samples ([SFT adapter](https://huggingface.co/mazzaqq/SFT_4000/settings))
 
 ## Evaluation
 
