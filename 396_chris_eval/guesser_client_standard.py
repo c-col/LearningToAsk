@@ -1,5 +1,5 @@
 from huggingface_hub import InferenceClient
-from utils import load_hf_token
+from utils import load_hf_token, extract_question_from_generation
 
 guesser_client = InferenceClient(
     model="deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
