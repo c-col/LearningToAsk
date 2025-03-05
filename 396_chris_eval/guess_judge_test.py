@@ -109,7 +109,7 @@ def play_game(game_entities: List[str], game_target: str):
             guesser_output += guesser_token
 
         if is_thinking_over:
-            guesser_output += end_think_token[2:]
+            guesser_output += end_think_token[1:]
         else:
             guesser_output += end_think_token
 
