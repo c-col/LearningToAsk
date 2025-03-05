@@ -1,4 +1,6 @@
 from huggingface_hub import InferenceClient
+from tqdm import tqdm
+
 from utils import load_hf_token
 
 # just for easy reference:
@@ -18,7 +20,7 @@ game_entities = [
 game_entities_string = ", ".join(game_entities)
 
 # ==========
-current_question = "Is it a bird?"
+current_question = "Is it a dog?"  # "Does this animal have a long neck?"  # "Is it a bird?"
 temp_entity_name = "budgie"
 
 
@@ -48,8 +50,9 @@ def judge_all_entity(active_entities, question):
     active_entities_string = ", ".join(active_entities)
     all_prompt = (f"I have a list of things, and for each thing, I want to know \"{question}\". "
                   f"The list of things is: {active_entities_string}. "
-                  f"Please generate a JSON output that assigns a value of \"yes\", \"no\", or \"unknown\" "
-                  f"for each element from my list.")
+                  # f"Please generate a JSON output that assigns a value of \"yes\", \"no\" "  # , or \"unknown\" 
+                  f"Generate a JSON output that assigns a value of \"yes\", \"no\", \"sometimes\", or \"unknown\" " 
+                  f"for each element of the list.")
 
     response_format = {
         "type": "json",
@@ -74,20 +77,37 @@ def judge_all_entity(active_entities, question):
     return messages, response_format
 
 
+generation_max_length = 1000
 use_one_entity_prompt = False
+stream_output = True
 if use_one_entity_prompt:
     judge_prompt = judge_one_entity(temp_entity_name, current_question)
-    judge_response = client.chat.completions.create(
-        messages=judge_prompt,
-        max_tokens=500,
-    )
+    if stream_output:
+        judge_response = ""
+        with tqdm(desc="Judging...") as pbar:
+            for token in client.chat.completions.create(messages=judge_prompt, max_tokens=generation_max_length, stream=True):
+                judge_response += token.choices[0].delta.content
+            pbar.update(1)
+    else:
+        judge_response = client.chat.completions.create(
+            messages=judge_prompt,
+            max_tokens=generation_max_length,
+        )
 else:
     judge_prompt, judge_format = judge_all_entity(game_entities, current_question)
-    judge_response = client.chat.completions.create(
-        messages=judge_prompt,
-        max_tokens=500,
-        response_format=judge_format
-    )
+    if stream_output:
+        judge_response = ""
+        with tqdm(desc="Judging...") as pbar:
+            for token in client.chat.completions.create(messages=judge_prompt, max_tokens=generation_max_length, response_format=judge_format, stream=True):
+                judge_response += token.choices[0].delta.content
+
+            pbar.update(1)
+    else:
+        judge_response = client.chat.completions.create(
+            messages=judge_prompt,
+            max_tokens=generation_max_length,
+            response_format=judge_format
+        )
 
     # example:
     # 'I have a list of things, and for each thing, I want to know "Is it a bird?".
@@ -120,6 +140,8 @@ else:
     # )
 
 print(judge_prompt)
-print("")
-print(judge_response.choices[0].message)
-print(judge_response.choices[0].message.content)
+print("\n=====\n")
+if stream_output:
+    print(judge_response)
+else:
+    print(judge_response.choices[0].message.content)

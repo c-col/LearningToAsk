@@ -14,7 +14,8 @@ game_entities = [
 game_entities_string = ", ".join(game_entities)
 
 guesser_prompt = (f"Let's play 20 questions. I'm thinking of an element from this list: {game_entities_string}. "
-                  f"Each turn, you can ask me one yes/no question about the mystery element, and I'll answer truthfully. "
+                  f"Each turn, you can ask me one yes/no question about the mystery entity. "
+                  f"I'll answer each question truthfully, but if I'm unsure, then I'll answer with \"unknown\". "
                   f"Your goal is to minimize the number of questions used to reach the answer -- if you don't get it "
                   "within 20 turns, you lose. Ask your question by enclosing it in \\boxed{}. What's your first question?")
 guesser_messages = [
