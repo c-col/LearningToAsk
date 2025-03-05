@@ -199,7 +199,7 @@ def play_game(game_entities: List[str], game_target: str):
         print(f"\n------[[turn {turn_number + 1} guesser output]]------")
         print(guesser_output)
 
-        judge_prompt, judge_format = judge_prompt_fn(game_entities, guesser_output)
+        judge_prompt, judge_format = judge_prompt_fn(game_entities, guesser_question)
         judge_response = ""
 
         # Generate judge's response
