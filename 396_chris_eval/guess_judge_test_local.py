@@ -6,6 +6,7 @@ from tqdm import tqdm
 from random import randint, shuffle
 import torch
 from dataclasses import dataclass
+import re
 
 from utils import load_hf_token, extract_question_from_generation
 
@@ -22,7 +23,7 @@ class ModelClient:
             self.pipeline = pipeline("text-generation", model=self.model, tokenizer=self.tokenizer, device=self.device)
             self.client = None
         else:
-            # Use the global hf_token_path if specified
+            # Use the global hf_token_path
             token = load_hf_token(hf_token_path) if hf_token_path else load_hf_token()
             self.client = InferenceClient(
                 model=model_name,
@@ -40,6 +41,7 @@ class ModelClient:
                 response_format: Optional[Dict[str, Any]] = None) -> Iterator[str]:
         """Unified generation interface that works for both local and API inference."""
         if self.use_local:
+            # For local models, we generate all at once then stream the output
             outputs = self.pipeline(
                 prompt,
                 max_new_tokens=max_new_tokens,
@@ -47,16 +49,25 @@ class ModelClient:
                 temperature=temperature,
                 num_return_sequences=1,
                 pad_token_id=self.tokenizer.eos_token_id,
-                stream=stream
             )
-            prompt_len = len(prompt)
-            for output in outputs:
-                token = output[0]['generated_text'][prompt_len:]
-                if stop and any(s in token for s in stop):
-                    token = token[:min(token.find(s) + len(s) for s in stop if s in token)]
-                    yield token
+            
+            # Get the generated text after the prompt
+            generated_text = outputs[0]['generated_text'][len(prompt):]
+            
+            if not stream:
+                yield generated_text
+                return
+                
+            # Stream the text token by token
+            current_text = ""
+            for char in generated_text:
+                current_text += char
+                # Check if we should stop
+                if stop and any(s in current_text for s in stop):
+                    stop_idx = min(current_text.find(s) + len(s) for s in stop if s in current_text)
+                    yield current_text[:stop_idx]
                     break
-                yield token
+                yield char
         else:
             if response_format:
                 # For chat completions with response format (used by judge)
@@ -80,6 +91,7 @@ class ModelClient:
 
 
 # generation settings
+global use_random_seed, seed
 use_random_seed = True
 seed = randint(0, 1000) if use_random_seed else 1
 guesser_think_budget = 1000
@@ -87,16 +99,11 @@ guesser_answer_budget = 500
 judge_token_budget = 1000  # high just to be safe
 
 # Model configuration
-use_local_models = False  # Set to True to run models locally instead of using HF API
 hf_token_path = None  # Set this to the path of your HuggingFace token file, or None to use the default path
-gpu_device = None  # GPU device to use when running locally (e.g., "cuda:0", "cuda:1", etc.)
 
 # Initialize model clients
 guesser_model = "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"
 judge_model = "Qwen/Qwen2.5-3B-Instruct"
-
-guesser_client = ModelClient(guesser_model, use_local=use_local_models, device=gpu_device)
-judge_client = ModelClient(judge_model, use_local=use_local_models, device=gpu_device)
 
 # guesser prompt / conversation
 def guesser_prompt_fn(entity_list: List[str]) -> str:
@@ -120,7 +127,8 @@ def judge_prompt_fn(active_entities, question):
     all_prompt = (f"I have a list of things, and for each thing, I want to know \"{question}\". "
                   f"The list of things is: {active_entities_string}. "
                   f"Generate a JSON output that assigns a value of \"yes\", \"no\", \"sometimes\", or \"unknown\" "
-                  f"for each element of the list.")
+                  f"for each element of the list. Respond ONLY with the JSON object, no other text. "
+                  f"Example format: {{'entity1': 'yes', 'entity2': 'no'}}.")
 
     response_format = {
         "type": "json",
@@ -138,7 +146,7 @@ def judge_prompt_fn(active_entities, question):
     return messages, response_format
 
 
-def play_game(game_entities: List[str], game_target: str):
+def play_game(game_entities: List[str], game_target: str, guesser_client, judge_client):
     if use_random_seed:
         shuffle(game_entities)
     guesser_conversation = [
@@ -213,22 +221,58 @@ def play_game(game_entities: List[str], game_target: str):
                 judge_response += token
                 pbar.update(1)
 
-        try:
-            judge_response = json.loads(judge_response)
-        except Exception as e:
-            print("\n\n\n\nJSON EXCEPTION!!")
-            print(judge_response)
-            judge_response = judge_response.replace("'", '"')
-            judge_response = json.loads(judge_response)
+        # Debug the raw response
+        print("\nRaw judge response:", repr(judge_response))
 
-        # tidy up response if needed
-        judge_response = {k: v.lower().strip() for k, v in judge_response.items()}
-        for k, v in judge_response.items():
-            if v not in ["yes", "no", "sometimes", "unknown"]:
-                print("\n\n\n\nJUDGE VALUE EXCEPTION!!")
-                print(judge_response)
-                print(f"'{v}'")
-                raise ValueError(f"judge value out of bounds for field {k}: {v}")
+        # Clean and parse JSON response
+        try:
+            # First, try to find JSON in the response
+            json_start = judge_response.find('{')
+            json_end = judge_response.rfind('}') + 1
+            
+            if json_start != -1 and json_end != -1:
+                json_str = judge_response[json_start:json_end]
+            else:
+                raise ValueError("No JSON object found in response")
+
+            # Clean up common issues
+            json_str = json_str.strip()
+            json_str = json_str.replace("'", '"')  # Replace single quotes with double quotes
+            json_str = json_str.replace('\n', '')  # Remove newlines
+            json_str = re.sub(r'""".*?"""', '', json_str)  # Remove triple quotes if present
+            json_str = re.sub(r'```.*?```', '', json_str)  # Remove code blocks if present
+            
+            # Try to parse the cleaned JSON
+            try:
+                judge_response = json.loads(json_str)
+            except json.JSONDecodeError as e:
+                print(f"\nJSON parsing error: {e}")
+                print("Cleaned JSON string:", repr(json_str))
+                raise
+
+            # Validate and normalize the values
+            normalized_response = {}
+            for entity in game_entities:
+                if entity not in judge_response:
+                    print(f"\nWarning: Missing response for {entity}")
+                    normalized_response[entity] = "unknown"
+                    continue
+                
+                value = judge_response[entity].lower().strip()
+                if value not in ["yes", "no", "sometimes", "unknown"]:
+                    print(f"\nWarning: Invalid value '{value}' for {entity}")
+                    normalized_response[entity] = "unknown"
+                else:
+                    normalized_response[entity] = value
+            
+            judge_response = normalized_response
+
+        except Exception as e:
+            print(f"\nError processing judge response: {str(e)}")
+            print("Raw response:", repr(judge_response))
+            # Fallback to safe default
+            judge_response = {entity: "unknown" for entity in game_entities}
+            print("Falling back to all 'unknown' responses")
 
         turn_history.append({"guesser": guesser_output, "question": guesser_question, "json": judge_response})
 
@@ -256,44 +300,41 @@ if __name__ == "__main__":
     parser.add_argument('--gpu', type=str, help='GPU device to use when running locally. Can be specified as a number (0, 1, 2) or as "cuda:X". If not specified, will use the first available GPU or CPU if no GPU is available.')
     args = parser.parse_args()
 
+    # Set up device configuration
+    gpu_device = None
     if args.local:
-        use_local_models = True
-        if args.gpu:
-            if not torch.cuda.is_available():
-                print("Warning: GPU specified but CUDA is not available. Falling back to CPU.")
-                gpu_device = "cpu"
-            else:
-                # Handle both "cuda:X" and simple number formats
-                try:
-                    if ":" in args.gpu:
-                        device_num = int(args.gpu.split(':')[1])
-                    else:
-                        device_num = int(args.gpu)
-                    
-                    if device_num >= torch.cuda.device_count():
-                        print(f"Warning: GPU {device_num} not found. Available GPUs: {list(range(torch.cuda.device_count()))}. Using first available GPU.")
-                        gpu_device = "cuda:0"
-                    else:
-                        gpu_device = f"cuda:{device_num}"
-                        print(f"Using GPU: {gpu_device}")
-                except ValueError:
-                    print(f"Warning: Invalid GPU specification '{args.gpu}'. Please use a number (0, 1, 2) or 'cuda:X' format. Using first available GPU.")
+        if not torch.cuda.is_available():
+            print("Warning: GPU specified but CUDA is not available. Falling back to CPU.")
+            gpu_device = "cpu"
+        elif args.gpu:
+            # Handle both "cuda:X" and simple number formats
+            try:
+                if ":" in args.gpu:
+                    device_num = int(args.gpu.split(':')[1])
+                else:
+                    device_num = int(args.gpu)
+                
+                if device_num >= torch.cuda.device_count():
+                    print(f"Warning: GPU {device_num} not found. Available GPUs: {list(range(torch.cuda.device_count()))}. Using first available GPU.")
                     gpu_device = "cuda:0"
-        elif torch.cuda.is_available():
+                else:
+                    gpu_device = f"cuda:{device_num}"
+                    print(f"Using GPU: {gpu_device}")
+            except ValueError:
+                print(f"Warning: Invalid GPU specification '{args.gpu}'. Please use a number (0, 1, 2) or 'cuda:X' format. Using first available GPU.")
+                gpu_device = "cuda:0"
+        else:
             gpu_device = "cuda:0"
             print(f"No GPU specified. Using first available GPU: {gpu_device}")
-        else:
-            gpu_device = "cpu"
-            print("No GPU available. Using CPU.")
-    if args.token_path:
-        hf_token_path = args.token_path
+
+    # Handle seed configuration
     if args.seed is not None:
         use_random_seed = False
         seed = args.seed
 
-    # Re-initialize clients with updated configuration
-    guesser_client = ModelClient(guesser_model, use_local=use_local_models, device=gpu_device)
-    judge_client = ModelClient(judge_model, use_local=use_local_models, device=gpu_device)
+    # Initialize model clients with the parsed configuration
+    guesser_client = ModelClient(guesser_model, use_local=args.local, device=gpu_device)
+    judge_client = ModelClient(judge_model, use_local=args.local, device=gpu_device)
 
     test_game_entities = [
         "parakeet", "seal", "goose", "stork", "deer", "finch", "seagull", "dog", "dolphin", "cow",
@@ -301,14 +342,6 @@ if __name__ == "__main__":
     ]
     test_answer = "budgie"
 
-    # test_game_entities = [
-    #     "apple", "television", "dinosaur", "airplane", "house", "tree", "coat", "shoes", "car", "train", "shower",
-    #     "frisbee", "cow", "giganotosaurus", "siberian husky", "glass micropipette", "anger", "love", "hate",
-    #     "contentment", "jealousy", "surprise", "disgust", "hopefulness", "global poverty", "phase transition",
-    #     "positive sum game", "beauty", "representative democracy"
-    # ]
-    # test_answer = "jealousy"
-
-    play_game(test_game_entities, test_answer)
+    play_game(test_game_entities, test_answer, guesser_client, judge_client)
 
 
