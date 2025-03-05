@@ -12,7 +12,7 @@ from utils import load_hf_token, extract_question_from_generation
 # generation settings
 use_random_seed = True
 game_seed = randint(0, 1000) if use_random_seed else 1
-guesser_think_budget = 2000
+guesser_think_budget = 1000
 guesser_answer_budget = 500
 judge_token_budget = 2000  # high just to be safe
 
@@ -148,6 +148,7 @@ def play_game(game_entities: List[str], game_target: str, seed: int):
         # debug
         print(f"\n------[[turn {turn_number + 1} guesser output]]------")
         print(guesser_output)
+        print(f"\n\tExtracted question: {guesser_question}")
         # # #
 
         judge_prompt, judge_format = judge_prompt_fn(game_entities, guesser_output)
@@ -159,20 +160,20 @@ def play_game(game_entities: List[str], game_target: str, seed: int):
                     for token in judge_client.chat.completions.create(messages=judge_prompt, max_tokens=judge_token_budget, response_format=judge_format, stream=True, seed=seed):
                         judge_response += token.choices[0].delta.content
                         pbar.update(1)
-                    generation_success = True
             except Exception as e:
                 print(f"Judge generation failure: {e}")
                 print("\tSleeping for 10 seconds...")
                 sleep(10)
                 seed += 1
-        try:
-            judge_response = json.loads(judge_response)
-        except Exception as e:
-            # TODO: delete this later -- had a weird bug where the judge produced bad json
-            print("\n\n\n\nJSON EXCEPTION!!")
-            print(judge_response)
+
             judge_response = judge_response.replace("'", '"')
-            judge_response = json.loads(judge_response)
+            try:
+                judge_response = json.loads(judge_response)
+                generation_success = True
+            except Exception as e:
+                print(f"Judge JSON conversion failure: {e}")
+                print("\t", judge_response)
+
 
         # tidy up response if needed
         # TODO: delete this later
