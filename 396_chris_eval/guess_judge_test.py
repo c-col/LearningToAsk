@@ -2,6 +2,7 @@ from huggingface_hub import InferenceClient
 from transformers import AutoTokenizer
 from typing import List
 import json
+from time import sleep
 from tqdm import tqdm
 from random import randint, shuffle
 
@@ -10,10 +11,10 @@ from utils import load_hf_token, extract_question_from_generation
 
 # generation settings
 use_random_seed = True
-seed = randint(0, 1000) if use_random_seed else 1
-guesser_think_budget = 1000
+game_seed = randint(0, 1000) if use_random_seed else 1
+guesser_think_budget = 2000
 guesser_answer_budget = 500
-judge_token_budget = 1000  # high just to be safe
+judge_token_budget = 2000  # high just to be safe
 
 # guesser model / inference API settings
 guesser_model = "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"
@@ -72,7 +73,7 @@ def judge_prompt_fn(active_entities, question):
     return messages, response_format
 
 
-def play_game(game_entities: List[str], game_target: str):
+def play_game(game_entities: List[str], game_target: str, seed: int):
     if use_random_seed:
         shuffle(game_entities)
     guesser_conversation = [
@@ -95,18 +96,30 @@ def play_game(game_entities: List[str], game_target: str):
         # # #
 
         # for guesser_token in tqdm(guess_client.text_generation(guesser_input, max_new_tokens=guesser_think_budget, stream=True, seed=seed), total=guesser_think_budget, desc="Guessing..."):
-        for token_ix, guesser_token in enumerate(tqdm(guess_client.text_generation(guesser_input, max_new_tokens=guesser_think_budget + 500, stream=True, seed=seed), total=guesser_think_budget + 500, desc="Guessing...")):
-            # modified budget forcing here so that the model isn't interrupted mid-thought (kept generating really bad questions)
-            if token_ix + 1 >= guesser_think_budget:
-                if "\n\n" in guesser_token:
-                    guesser_output += guesser_token.replace("\n\n", "")
-                    break
-            # # #
-            if guesser_token == "</think>":
-                # then, the model already added a "\n" to the generation,
-                is_thinking_over = True
-                break
-            guesser_output += guesser_token
+        generation_success = False
+        while not generation_success:
+            temp_output = ""
+            try:
+                for token_ix, guesser_token in enumerate(tqdm(guess_client.text_generation(guesser_input, max_new_tokens=guesser_think_budget + 500, stream=True, seed=seed), total=guesser_think_budget + 500, desc="Guessing...")):
+                    # modified budget forcing here so that the model isn't interrupted mid-thought (kept generating really bad questions)
+                    if token_ix + 1 >= guesser_think_budget:
+                        if "\n\n" in guesser_token:
+                            temp_output += guesser_token.replace("\n\n", "")
+                            break
+                    # # #
+                    if guesser_token == "</think>":
+                        # then, the model already added a "\n" to the generation,
+                        is_thinking_over = True
+                        break
+                    temp_output += guesser_token
+                generation_success = True
+                guesser_output += temp_output
+            except Exception as e:
+                print(f"Guesser generation failure: {e}")
+                print("\tSleeping for 10 seconds...")
+                sleep(10)
+                seed += 1
+
 
         if is_thinking_over:
             guesser_output += end_think_token[1:]
@@ -114,10 +127,22 @@ def play_game(game_entities: List[str], game_target: str):
             guesser_output += end_think_token
 
         guesser_input += guesser_output
-        for token in guess_client.text_generation(guesser_input, max_new_tokens=guesser_answer_budget, stream=True, seed=seed):  # stop=["}"]
-            guesser_output += token
-            if "}" in token:
-                break
+        generation_success = False
+        while not generation_success:
+            temp_output = ""
+            try:
+                for token in guess_client.text_generation(guesser_input, max_new_tokens=guesser_answer_budget, stream=True, seed=seed):  # stop=["}"]
+                    temp_output += token
+                    if "}" in token:
+                        break
+                guesser_output += temp_output
+                generation_success = True
+            except Exception as e:
+                print(f"Guesser generation failure: {e}")
+                print("\tSleeping for 10 seconds...")
+                sleep(10)
+                seed += 1
+
         guesser_question = extract_question_from_generation(guesser_output)
 
         # debug
@@ -126,11 +151,20 @@ def play_game(game_entities: List[str], game_target: str):
         # # #
 
         judge_prompt, judge_format = judge_prompt_fn(game_entities, guesser_output)
-        judge_response = ""
-        with tqdm(desc="Judging...") as pbar:
-            for token in judge_client.chat.completions.create(messages=judge_prompt, max_tokens=judge_token_budget, response_format=judge_format, stream=True):
-                judge_response += token.choices[0].delta.content
-            pbar.update(1)
+        generation_success = False
+        while not generation_success:
+            judge_response = ""
+            try:
+                with tqdm(desc="Judging...") as pbar:
+                    for token in judge_client.chat.completions.create(messages=judge_prompt, max_tokens=judge_token_budget, response_format=judge_format, stream=True, seed=seed):
+                        judge_response += token.choices[0].delta.content
+                        pbar.update(1)
+                    generation_success = True
+            except Exception as e:
+                print(f"Judge generation failure: {e}")
+                print("\tSleeping for 10 seconds...")
+                sleep(10)
+                seed += 1
         try:
             judge_response = json.loads(judge_response)
         except Exception as e:
@@ -184,5 +218,5 @@ if __name__ == "__main__":
     # ]
     # test_answer = "jealousy"
 
-    play_game(test_game_entities, test_answer)
+    play_game(test_game_entities, test_answer, game_seed)
 
