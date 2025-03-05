@@ -47,6 +47,29 @@ end_think_token = "\n</think>\n\nMy question for this turn: \\boxed{"
 
 
 # judge prompt builder
+def judge_prompt_fn_single(entity_name, question):
+    is_entity_prefix_an = any([entity_name.startswith(vowel) for vowel in ["a", "e", "i", "o", "u"]])  # rough approx
+    entity_string = " ".join([("an" if is_entity_prefix_an else "a"), entity_name])
+
+    if not any([question.endswith(symbol) for symbol in ["?", "."]]):
+        question += "?"
+
+    one_prompt = (f"I'm learning about something called a {entity_string}. "
+                  f"{question} Limit your answer to \"yes\", \"no\", \"sometimes\", or \"unknown\".")
+
+    response_format = {
+        "type": "regex",
+        "value": "(yes|no|sometimes|unknown)",
+    }
+
+    messages = [
+        {
+            "role": "user",
+            "content": one_prompt
+        }
+    ]
+    return messages, response_format
+
 def judge_prompt_fn(active_entities, question):
     if not any([question.endswith(symbol) for symbol in ["?", "."]]):
         question += "?"
@@ -151,7 +174,11 @@ def play_game(game_entities: List[str], game_target: str, seed: int):
         print(f"\n\tExtracted question: {guesser_question}")
         # # #
 
-        judge_prompt, judge_format = judge_prompt_fn(game_entities, guesser_output)
+
+        # for entity in game_entities:
+        #     judge_prompt, judge_format = judge_prompt_fn_single(game_entities, guesser_output)
+
+        judge_prompt, judge_format = judge_prompt_fn(game_entities, guesser_question)
         generation_success = False
         while not generation_success:
             judge_response = ""
