@@ -89,10 +89,10 @@ class GameState:
         return (
             f"\n=== Turn {self.turn_number} ===\n"
             f"Target: {self.target}\n"
-            f"Previous Entities: {', '.join(self.previous_entities)}\n"
+            f"Previous Entities (len: {len(self.previous_entities)}): {', '.join(self.previous_entities)}\n"
             f"Guesser Question: {self.guesser_question}\n"
             f"Judge Answer: {self.judge_response}\n"
-            f"Remaining Entities: {', '.join(self.remaining_entities)}\n"
+            f"Remaining Entities (len: {len(self.remaining_entities)}): {', '.join(self.remaining_entities)}\n"
             f"Information Gain: {self.information_gain:.2f} bits (ideal: {self.ideal_information_gain:.2f} bits)\n"
         )
 
