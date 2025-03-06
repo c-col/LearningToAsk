@@ -71,30 +71,6 @@ def generate_json_from_question_entities(full_entity_list: List[str], partial_en
     return output
 
 
-def compute_ideal_information_gain(total_entities: int) -> float:
-    """Compute the maximum possible information gain from a perfect 50-50 split.
-    
-    Args:
-        total_entities: Total number of entities before the split
-        
-    Returns:
-        Information gain in bits for a perfect binary split (1 bit for powers of 2)
-    """
-    if total_entities <= 1:
-        return 0.0
-        
-    # For a perfect split, remaining_count = eliminated_count = total_entities/2
-    half_count = total_entities / 2
-    
-    # Initial entropy
-    parent_entropy = log2(total_entities)
-    
-    # For 50-50 split, p_remaining = p_eliminated = 0.5
-    weighted_child_entropy = log2(half_count)  # 0.5 * log2(n/2) + 0.5 * log2(n/2)
-            
-    return parent_entropy - weighted_child_entropy
-
-
 def compute_information_gain(total_entities: int, remaining_count: int) -> float:
     """Compute information gain based on binary split between remaining and eliminated entities.
     
@@ -105,6 +81,11 @@ def compute_information_gain(total_entities: int, remaining_count: int) -> float
     For example, if the target's answer is "yes", then:
     - Remaining = entities with "yes" + "sometimes" + "unknown" responses
     - Eliminated = entities with "no" responses
+
+    To compute the maximum possible information gain, we assume the best possible split:
+    - For even numbers, this is a perfect 50-50 split.
+    - For odd numbers N, this splits into m and m+1 where m + (m+1) = N.
+    e.g. ideal_information_gain = compute_ideal_information_gain(total_entities, total_entities // 2)
     
     Args:
         total_entities: Total number of entities before the split
@@ -113,6 +94,10 @@ def compute_information_gain(total_entities: int, remaining_count: int) -> float
     Returns:
         Information gain in bits, computed as the reduction in entropy from the split
     """
+    assert total_entities > 0, "Total entities must be greater than 0"
+    assert remaining_count > 0, "Remaining count must be greater than 0"
+    assert remaining_count <= total_entities, "Remaining count must be less than or equal to total entities"
+
     if total_entities == 0 or remaining_count == 0:
         return 0.0
         
@@ -122,17 +107,16 @@ def compute_information_gain(total_entities: int, remaining_count: int) -> float
     if eliminated_count == 0:
         return 0.0
         
-    # Initial entropy (parent)
-    parent_entropy = log2(total_entities)
+    # Initial entropy (before the split)
+    entropy_before = log2(total_entities)
     
     # Calculate weighted entropy of the binary split
     p_remaining = remaining_count / total_entities
     p_eliminated = eliminated_count / total_entities
-    
-    weighted_child_entropy = (
+    split_entropy = (
         p_remaining * log2(remaining_count) +
         p_eliminated * log2(eliminated_count)
     )
             
     # Information gain is reduction in entropy
-    return max(0.0, parent_entropy - weighted_child_entropy)
+    return max(0.0, entropy_before - split_entropy)
