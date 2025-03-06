@@ -99,7 +99,7 @@ guesser_answer_budget = 500
 judge_token_budget = 1000  # high just to be safe
 
 # Model configuration
-hf_token_path = None  # Set this to the path of your HuggingFace token file, or None to use the default path
+hf_token_path = "/Users/benigerisimon/Desktop/PhD/hf_token.txt"  # Set this to the path of your HuggingFace token file, or None to use the default path
 
 # Initialize model clients
 guesser_model = "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"
@@ -202,6 +202,9 @@ def play_game(game_entities: List[str], game_target: str, guesser_client, judge_
                 break
 
         guesser_question = extract_question_from_generation(guesser_output)
+
+        print(f"\n------[[turn {turn_number + 1} guesser question]]------")
+        print(f"guesser_question: {guesser_question}")
 
         # debug
         print(f"\n------[[turn {turn_number + 1} guesser output]]------")
