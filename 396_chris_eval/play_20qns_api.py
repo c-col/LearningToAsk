@@ -52,13 +52,16 @@ class GameState:
     remaining_entities: List[str] = None
     previous_entities: Optional[List[str]] = None
     current_question: Optional[str] = None
-    judege_response: Optional[Dict[str, str]] = None
+    past_questions: List[str] = None
+    judge_response: Optional[Dict[str, str]] = None
     information_gain: Optional[float] = None
     ideal_information_gain: Optional[float] = None
 
     def __post_init__(self):
         if self.remaining_entities is None:
             self.remaining_entities = []
+        if self.past_questions is None:
+            self.past_questions = []
 
     def update_state(self, question: str, judge_response: Dict[str, str]):
         """Update game state based on the latest turn."""
@@ -68,6 +71,7 @@ class GameState:
         self.previous_entities = self.remaining_entities.copy()
         self.turn_number += 1
         self.guesser_question = question
+        self.past_questions.append(question)
         self.judge_response = judge_response
         
         # Update remaining entities based on target's answer
@@ -84,11 +88,14 @@ class GameState:
         )
         self.ideal_information_gain = compute_information_gain(prev_entity_count, prev_entity_count // 2)
 
+        self.past_questions_str = "\n".join([f"Q{i+1}: {q}" for i, q in enumerate(self.past_questions)])
+
     def __str__(self) -> str:
         """Pretty print the game state."""
         return (
             f"\n=== Game State Turn {self.turn_number} ===\n"
             f"Target: {self.target}\n"
+            # f"Previous Questions:\n{past_questions_str}\n"
             f"Previous Entities (len: {len(self.previous_entities)}): {', '.join(self.previous_entities)}\n"
             f"Guesser Question: {self.guesser_question}\n"
             f"Judge Answer: {self.judge_response}\n"
@@ -481,6 +488,98 @@ def play_game(game_entities: List[str], game_target: str, guesser_client: ModelC
         guesser_conversation.append(dict(role='user', content=judge_response_text))
 
     return turn_history
+
+
+
+def cot_prompt_fn(entity_list: List[str], game_state: GameState, provide_remaining_entities: bool = False) -> str:
+    """Chain of thought prompt that encourages explicit tracking and reasoning about game state.
+    
+    Args:
+        entity_list: Original list of all possible entities
+        game_state: Current state of the game including past questions and remaining entities
+        provide_remaining_entities: If True, shows current remaining entities. If False, asks model to reason about them.
+    """
+    entities_string = ", ".join(entity_list)
+    
+    # Build history of questions and answers
+    qa_history = ""
+    if game_state.past_questions:
+        qa_history = "\nPrevious questions and their impact:\n"
+        for i, q in enumerate(game_state.past_questions):
+            target_answer = game_state.judge_response[game_state.target]
+            qa_history += f"Q{i+1}: {q}\nA: {target_answer}\n"
+    
+    # Base prompt parts
+    base_prompt = (
+        f"Let's play 20 questions. I'm thinking of one of these items: {entities_string}.\n\n"
+        "You are the guesser and your goal is to identify the mystery item by asking strategic yes/no questions "
+        "that narrow down the list of possibilities.\n\n"
+        "Let's think about this step by step:\n\n"
+        f"1. Starting entities ({len(entity_list)}):\n{entities_string}\n\n"
+        f"2. Questions asked so far:{qa_history}\n\n"
+    )
+    
+    # Step 3 differs based on provide_remaining_entities
+    if provide_remaining_entities:
+        remaining_entities_string = ", ".join(game_state.remaining_entities)
+        step3 = f"3. Currently remaining entities ({len(game_state.remaining_entities)}):\n{remaining_entities_string}\n\n"
+    else:
+        step3 = (
+            "3. Let's determine the current remaining entities step by step:\n\n"
+            "Step 3a. Previous state:\n"
+            "<previous_state>\n"
+            "Previous remaining entities: [List them]\n"
+            "Previous question: [State it]\n"
+            "Judge's answer: [State it]\n"
+            "</previous_state>\n\n"
+            
+            "Step 3b. Entity filtering rules:\n"
+            "<filtering_rules>\n"
+            "- If answer is 'yes': Keep entities that match the property\n"
+            "- If answer is 'no': Remove entities that match the property\n"
+            "- If answer is 'sometimes' or 'unknown': Keep these entities as possibilities\n"
+            "</filtering_rules>\n\n"
+            
+            "Step 3c. Analysis of each entity:\n"
+            "<entity_analysis>\n"
+            "[For each entity, explain whether it matches the property asked about]\n"
+            "[Example: 'parakeet - can fly, matches property']\n"
+            "</entity_analysis>\n\n"
+            
+            "Step 3d. Updated entities:\n"
+            "<updated_entities>\n"
+            "Entities to keep: [List them]\n"
+            "Entities to remove: [List them]\n"
+            "Final remaining entities: [List them]\n"
+            "</updated_entities>\n\n"
+            
+            "Step 3e. Information gain:\n"
+            "<information_gain>\n"
+            "Starting count: [Number]\n"
+            "Remaining count: [Number]\n"
+            "Information gained: [Explain how informative the split was]\n"
+            "</information_gain>\n\n"
+        )
+    
+    # Rest of the prompt
+    rest_of_prompt = (
+        "4. Let's categorize the remaining entities by their key characteristics:\n"
+        "   [Your categorization here]\n\n"
+        "5. Based on these categories, what question would best split the remaining entities?\n"
+        "   - The ideal question should eliminate roughly half of the possibilities\n"
+        "   - Avoid questions that were already asked\n"
+        "   - Consider what you learned from previous answers\n"
+        "   [Your reasoning here]\n\n"
+        "6. Write your chosen question inside \\boxed{}. For example: \"\\boxed{Is it a living thing?}\"\n\n"
+        "I will respond with one of four answers:\n"
+        "- \"yes\"\n"
+        "- \"no\"\n"
+        "- \"sometimes\"\n"
+        "- \"unknown\"\n\n"
+        "Now, follow the steps above to analyze the game state and ask your next question."
+    )
+    
+    return base_prompt + step3 + rest_of_prompt
 
 
 if __name__ == "__main__":
