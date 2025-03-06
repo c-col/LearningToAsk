@@ -16,7 +16,6 @@ from utils import (
     generate_json_from_question_entities,
     find_whole_word,
     compute_information_gain,
-    compute_ideal_information_gain
 )
 
 
@@ -51,8 +50,9 @@ class GameState:
     target: str
     turn_number: int = 0
     remaining_entities: List[str] = None
+    previous_entities: Optional[List[str]] = None
     current_question: Optional[str] = None
-    judge_answers: Optional[Dict[str, str]] = None
+    judege_response: Optional[Dict[str, str]] = None
     information_gain: Optional[float] = None
     ideal_information_gain: Optional[float] = None
 
@@ -65,16 +65,16 @@ class GameState:
         # Store previous count for information gain calculation
         prev_entity_count = len(self.remaining_entities)
         assert prev_entity_count > 0, "Previous entity count must be greater than 0"
-        
+        self.previous_entities = self.remaining_entities.copy()
         self.turn_number += 1
-        self.current_question = question
-        self.judge_answers = judge_response
+        self.guesser_question = question
+        self.judge_response = judge_response
         
         # Update remaining entities based on target's answer
         target_answer = judge_response[self.target]
         self.remaining_entities = [
             entity for entity, answer in judge_response.items()
-            if answer in [target_answer, "sometimes", "unknown"]
+            if entity in self.previous_entities and answer in [target_answer, "sometimes", "unknown"]
         ]
         
         # Compute actual and ideal information gain
@@ -82,15 +82,16 @@ class GameState:
             total_entities=prev_entity_count,
             remaining_count=len(self.remaining_entities)
         )
-        self.ideal_information_gain = compute_ideal_information_gain(prev_entity_count)
+        self.ideal_information_gain = compute_information_gain(prev_entity_count, prev_entity_count // 2)
 
     def __str__(self) -> str:
         """Pretty print the game state."""
         return (
             f"\n=== Turn {self.turn_number} ===\n"
             f"Target: {self.target}\n"
-            f"Question: {self.current_question}\n"
-            f"Judge Answers: {self.judge_answers}\n"
+            f"Previous Entities: {', '.join(self.previous_entities)}\n"
+            f"Guesser Question: {self.guesser_question}\n"
+            f"Judge Answer: {self.judge_response}\n"
             f"Remaining Entities: {', '.join(self.remaining_entities)}\n"
             f"Information Gain: {self.information_gain:.2f} bits (ideal: {self.ideal_information_gain:.2f} bits)\n"
         )
@@ -345,21 +346,47 @@ def judge_feedback(judge_client: ModelClient, game_entities: List[str], question
         if '. ' in line:
             line = line.split('. ', 1)[1]
             
-        # Split by colon if present
         if ':' in line:
+            # Standard format with colon separator
             entity, value = line.split(':', 1)
             entity = entity.strip()
             value = value.strip()
             
             # Only process if the entity is in our game entities
             if entity in game_entities:
-                # Normalize the value
+                # First try exact matching
                 if value in ['yes', 'no', 'sometimes', 'unknown']:
                     response_dict[entity] = value
                 else:
-                    # If value isn't one of our expected values, default to unknown
-                    print(f"\nWarning: Invalid value '{value}' for {entity}")
-                    response_dict[entity] = "unknown"
+                    # Try to find yes/no using fuzzy matching
+                    value_matches = check_if_question_names_entities(['yes', 'no'], value)
+                    if len(value_matches) == 1:
+                        response_dict[entity] = value_matches[0]
+                    else:
+                        # Check for sometimes/unknown using fuzzy matching
+                        other_matches = check_if_question_names_entities(['sometimes', 'unknown'], value)
+                        if len(other_matches) == 1:
+                            response_dict[entity] = other_matches[0]
+                        else:
+                            # If no clear match found, default to unknown
+                            print(f"\nWarning: Invalid value '{value}' for {entity}")
+                            response_dict[entity] = "unknown"
+        else:
+            # No colon in line - try to find both entity and value using fuzzy matching
+            entity_matches = check_if_question_names_entities(game_entities, line)
+            if len(entity_matches) == 1:
+                entity = entity_matches[0]
+                # Try to find the value in the same line
+                value_matches = check_if_question_names_entities(['yes', 'no'], line)
+                if len(value_matches) == 1:
+                    response_dict[entity] = value_matches[0]
+                else:
+                    other_matches = check_if_question_names_entities(['sometimes', 'unknown'], line)
+                    if len(other_matches) == 1:
+                        response_dict[entity] = other_matches[0]
+                    else:
+                        print(f"\nWarning: Could not find clear value in line '{line}' for {entity}")
+                        response_dict[entity] = "unknown"
 
     # Ensure all entities have a response
     for entity in game_entities:
