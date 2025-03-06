@@ -166,21 +166,19 @@ class ModelClient:
 def guesser_prompt_fn(entity_list: List[str]) -> str:
     entities_string = ", ".join(entity_list)
     return (f"Let's play 20 questions. I'm thinking of one of these items: {entities_string}. "
-            "You are the guesser and should ask strategic yes/no questions to identify the mystery item. "
+            "You are the guesser and your goal is to identify the mystery item by asking strategic yes/no questions that narrow down the list of possibilities. "
+            "After each question, items that don't match the answer will be eliminated from the list. "
+            "For example, if you ask 'Can it fly?' and the answer is 'yes', all non-flying items will be eliminated.\n\n"
             "For each question you ask:\n"
-            "1. First think about what information would be most useful to narrow down the possibilities\n"
-            "2. Then formulate a clear yes/no question\n"
+            "1. First think about what information would be most useful to eliminate as many incorrect items as possible\n"
+            "2. Then formulate a clear yes/no question that will split the remaining items effectively\n"
             "3. Finally write your question inside \\boxed{}. For example: \"\\boxed{Is it a living thing?}\"\n\n"
             "I will respond with one of four answers:\n"
-            # "- \"yes\" (always true)\n"
-            # "- \"no\" (never true)\n"
-            # "- \"sometimes\" (true in some cases)\n"
-            # "- \"unknown\" (information not available)\n\n"
             "- \"yes\"\n"
             "- \"no\"\n"
             "- \"sometimes\"\n"
             "- \"unknown\"\n\n"
-            "Ask your first question to start identifying the mystery item.")
+            "Now ask your a question to narrow down the list of possible items.")
 
 
 end_think_token = "\n</think>\n\nMy question for this turn: \\boxed{"
