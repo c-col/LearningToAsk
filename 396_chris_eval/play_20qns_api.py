@@ -87,7 +87,7 @@ class GameState:
     def __str__(self) -> str:
         """Pretty print the game state."""
         return (
-            f"\n=== Turn {self.turn_number} ===\n"
+            f"\n=== Game State Turn {self.turn_number} ===\n"
             f"Target: {self.target}\n"
             f"Previous Entities (len: {len(self.previous_entities)}): {', '.join(self.previous_entities)}\n"
             f"Guesser Question: {self.guesser_question}\n"
