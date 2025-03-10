@@ -102,7 +102,7 @@ Each model variant corresponds to a running endpoint on Huggingface's Inference 
 
 ### Base Command Format
 ```bash
-python play_20qns_api.py -g <model-endpoint> -gpe -gt r1 --dataset-path "../data/game_sets/test/<dataset-file>" --token-path <path-to-hf-inference-api-token>
+python play_20qns_api.py -g <model-endpoint> -gpe -gt r1 --dataset-path "../data/game_sets/test/<dataset-file>" --token-path <path-to-hf-inference-api-token> --token-path-judge <path-to-hf-inference-judge-token>
 ```
 ⚠️ **WARNING**: Make sure all commands below have your token path.
 
