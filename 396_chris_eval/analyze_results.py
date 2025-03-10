@@ -164,18 +164,171 @@ def plot_info_gain_over_turns(results: Dict, model: str, dataset: str, plots_dir
     plt.savefig(plots_dir / f'info_gain_over_turns_{model}_{dataset.replace(" ", "_")}.png')
     plt.close()
 
+def find_failed_game_with_zero_gain(results: Dict) -> Tuple[str, Dict]:
+    """Find a game where the model failed and had consecutive zero information gain questions.
+    
+    Args:
+        results: Dictionary containing game results
+        
+    Returns:
+        Tuple of (game_idx, game_data) or (None, None) if no such game found
+    """
+    if not results:
+        return None, None
+        
+    games = results["results"]
+    
+    for game_idx, game in games.items():
+        # Check if game was lost
+        if game["won_on_turn"] is None:
+            # Look for consecutive zero information gain questions
+            zero_streak = 0
+            for turn in game["turn_history"]:
+                if turn["information_gain"] == 0:
+                    zero_streak += 1
+                    if zero_streak >= 3:  # At least 3 consecutive zero gain questions
+                        return game_idx, game
+                else:
+                    zero_streak = 0
+                    
+    return None, None
+
+def format_judge_response(response):
+    """Format judge response nicely.
+    
+    Args:
+        response: Judge response (string or dictionary)
+        
+    Returns:
+        Formatted string
+    """
+    if isinstance(response, dict):
+        # Format dictionary of entity-answer pairs
+        lines = []
+        for entity, answer in response.items():
+            lines.append(f"  {entity}: {answer}")
+        return "\n" + "\n".join(lines)
+    else:
+        # Simple string response
+        return response
+
+def create_game_text_summary(game_idx: str, game: Dict) -> str:
+    """Create a human-readable text summary of a game.
+    
+    Args:
+        game_idx: Index of the game
+        game: Game data dictionary
+        
+    Returns:
+        Text summary of the game
+    """
+    lines = []
+    
+    # Game overview
+    lines.append("GAME OVERVIEW")
+    lines.append("=" * 50)
+    lines.append(f"Game Index: {game_idx}")
+    lines.append(f"Target: {game['target']}")
+    lines.append(f"Candidate Entities: {', '.join(game['candidate_entities'])}")
+    lines.append(f"Won on Turn: {game['won_on_turn'] if game['won_on_turn'] is not None else 'Failed'}")
+    lines.append(f"Final Entities: {', '.join(game['final_entities']) if game['final_entities'] else 'None'}")
+    lines.append(f"Number of Turns: {game['number_of_turns']}")
+    lines.append(f"Game Over: {game['game_over']}")
+    
+    # Turn history
+    lines.append("\nTURN HISTORY")
+    lines.append("=" * 50)
+    
+    for i, turn in enumerate(game['turn_history'], 1):
+        lines.append(f"\nTURN {i}")
+        lines.append("-" * 50)
+        
+        if "guesser_output" in turn:
+            lines.append(f"Guesser Output: {turn['guesser_output']}\n")
+
+        lines.append("-" * 10)
+        
+        lines.append(f"Question: {turn['question']}")
+        lines.append(f"Answer: {turn['judge_response'][game['target']]}")
+        
+
+        if "remaining_entities" in turn:
+            entities = turn["remaining_entities"]
+            lines.append(f"Remaining Entities ({len(entities)}): {', '.join(entities)}")
+        
+        lines.append(f"Information Gain: {turn['information_gain']:.3f}")
+        lines.append(f"Ideal Information Gain: {turn['ideal_information_gain']:.3f}")
+    
+    return "\n".join(lines)
+
+def save_failed_game_analysis(game_idx: str, game: Dict, model: str, dataset: str, failed_games_dir: Path) -> str:
+    """Save failed game data to JSON and TXT files.
+    
+    Args:
+        game_idx: Index of the game
+        game: Game data dictionary
+        model: Model name
+        dataset: Dataset name
+        failed_games_dir: Directory to save analysis files
+        
+    Returns:
+        Path to the saved JSON file
+    """
+    # Add game index to the game data
+    game_data = {
+        "game_idx": game_idx,
+        **game
+    }
+            
+    # Get actual dataset name
+    if dataset == "8 things (C = 8)":
+        dataset_name = "contrast_sets_8"
+    elif dataset == "16 things (C = 16)":
+        dataset_name = "contrast_sets_16"
+    else:
+        assert dataset == "bigbench (C = 29)", f"Invalid dataset: {dataset}"
+        dataset_name = "contrast_sets_bigbench"
+        
+    # Get actual model name
+    if model == "7B":
+        model_name = "deepseek-r1-distill-qwen-7b-mka"
+    else:
+        model_name = "deepseek-r1-distill-qwen-32b-ldr"
+    
+    # Base filename
+    base_filename = f"failed_game__{dataset_name}__{model_name}__game_{game_idx}"
+    
+    # Save JSON file
+    json_filename = f"{base_filename}.json"
+    json_filepath = failed_games_dir / json_filename
+    
+    with open(json_filepath, 'w') as f:
+        json.dump(game_data, f, indent=2)
+    
+    # Save TXT file
+    txt_filename = f"{base_filename}.txt"
+    txt_filepath = failed_games_dir / txt_filename
+    
+    with open(txt_filepath, 'w') as f:
+        f.write(create_game_text_summary(game_idx, game))
+        
+    return json_filename
+
 def main():
     base_dir = "../data/game_sets/test/outputs"
     models = ["7B", "32B"]
-    # datasets = ["8 things (C = 8)", "16 things (C = 16)", "bigbench (C = 29)"]
     datasets = ["8 things (C = 8)", "16 things (C = 16)"]
     
-    # Create plots directory
+    # Create output directories
     plots_dir = Path("../data/game_sets/test/outputs/plots")
+    failed_games_dir = Path("../data/game_sets/test/outputs/failed_games")
     plots_dir.mkdir(exist_ok=True)
+    failed_games_dir.mkdir(exist_ok=True)
 
-    # Collect results
+    # Collect results and find failed games
     results = {model: {} for model in models}
+    failed_games_found = False
+    
     for model in models:
         for dataset in datasets:
             data = load_results(base_dir, model, dataset)
@@ -183,8 +336,18 @@ def main():
                 results[model][dataset] = analyze_games(data)
                 # Plot information gain over turns for this model/dataset
                 plot_info_gain_over_turns(data, model, dataset, plots_dir)
+                
+                # Find and analyze failed games
+                game_idx, failed_game = find_failed_game_with_zero_gain(data)
+                if failed_game:
+                    filename = save_failed_game_analysis(game_idx, failed_game, model, dataset, failed_games_dir)
+                    failed_games_found = True
+                    print(f"Failed game analysis saved to: {filename}")
             else:
                 results[model][dataset] = (0.0, 0.0, 0.0, 0.0)
+    
+    if not failed_games_found:
+        print("\nNo failed games with consecutive zero information gain found.")
     
     # Print analysis
     print("\nModel Performance Analysis")
@@ -199,8 +362,6 @@ def main():
         print(f"Win Rate: {win_rate:.2%}")
         print(f"Avg Turns per Win: {turns:.1f}")
         print(f"Avg Info Gain: {info_gain:.3f}")
-        print(f"Avg Ideal Info Gain: {ideal_info_gain:.3f}")
-        print(f"Info Gain Efficiency: {(info_gain/ideal_info_gain*100):.1f}% of ideal")
 
     # How does 32B fare as games get harder
     print("\n32B Performance Across Datasets:")
@@ -211,8 +372,6 @@ def main():
         print(f"Win Rate: {win_rate:.2%}")
         print(f"Avg Turns per Win: {turns:.1f}")
         print(f"Avg Info Gain: {info_gain:.3f}")
-        print(f"Avg Ideal Info Gain: {ideal_info_gain:.3f}")
-        print(f"Info Gain Efficiency: {(info_gain/ideal_info_gain*100):.1f}% of ideal")
     
     # Compare 7B vs 32B on each dataset
     print("\n7B vs 32B Comparison:")
@@ -225,8 +384,6 @@ def main():
             print(f"Win Rate: {win_rate:.2%}")
             print(f"Avg Turns per Win: {turns:.1f}")
             print(f"Avg Info Gain: {info_gain:.3f}")
-            print(f"Avg Ideal Info Gain: {ideal_info_gain:.3f}")
-            print(f"Info Gain Efficiency: {(info_gain/ideal_info_gain*100):.1f}% of ideal")
     
     # Generate plots
     plot_model_comparison(results, plots_dir)
