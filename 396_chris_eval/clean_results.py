@@ -107,3 +107,4 @@ if __name__ == "__main__":
     # python clean_results.py ../data/game_sets/test/outputs/results__contrast_sets_8__deepseek-r1-distill-qwen-14b-znu/game_results.json
     # python clean_results.py ../data/game_sets/test/outputs/results__contrast_sets_8__deepseek-r1-distill-qwen-32b-ldr/game_results.json
     # python clean_results.py ../data/game_sets/test/outputs/results__contrast_sets_16__deepseek-r1-distill-qwen-7b-mka/game_results.json
+    # python clean_results.py ../data/game_sets/test/outputs/results__contrast_sets_16__deepseek-r1-distill-qwen-32b-ldr/game_results.json
