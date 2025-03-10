@@ -78,11 +78,11 @@ Each model variant corresponds to a running endpoint on Huggingface's Inference 
 | Model | Dataset | Priority | Person Running | Progress |
 |-------|---------|----------|----------------|----------|
 | DeepSeek R1 Distill Qwen 7B (MKA) | contrast_sets_8.json | high | Simon | Done |
-| DeepSeek R1 Distill Qwen 7B (MKA) | contrast_sets_16.json | high | Simon | Started |
-| DeepSeek R1 Distill Qwen 7B (MKA) | contrast_sets_bigbench.json | high | Shubham | ? |
+| DeepSeek R1 Distill Qwen 7B (MKA) | contrast_sets_16.json | high | Simon | Done |
+| DeepSeek R1 Distill Qwen 7B (MKA) | contrast_sets_bigbench.json | high | Shubham | Started |
 | DeepSeek R1 Distill Qwen 32B (LDR) | contrast_sets_8.json | high | Simon | Done |
-| DeepSeek R1 Distill Qwen 32B (LDR) | contrast_sets_16.json | high | Chris | ? |
-| DeepSeek R1 Distill Qwen 32B (LDR) | contrast_sets_bigbench.json | high | TBD | ? |
+| DeepSeek R1 Distill Qwen 32B (LDR) | contrast_sets_16.json | high | Simon | Started |
+| DeepSeek R1 Distill Qwen 32B (LDR) | contrast_sets_bigbench.json | high | Shubham | ? |
 
 <!-- | Model | Dataset | Priority | Person Running |
 |-------|---------|----------|----------------|
