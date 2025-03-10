@@ -95,16 +95,17 @@ def compute_information_gain(total_entities: int, remaining_count: int) -> float
         Information gain in bits, computed as the reduction in entropy from the split
     """
     assert total_entities > 0, "Total entities must be greater than 0"
-    assert remaining_count > 0, "Remaining count must be greater than 0"
+    assert remaining_count >= 0, "Remaining count must be greater than or equal to 0"
     assert remaining_count <= total_entities, "Remaining count must be less than or equal to total entities"
 
-    if total_entities == 0 or remaining_count == 0:
+    if total_entities == 1:
+        # When only one entity remains, there's no more information to gain
         return 0.0
         
     eliminated_count = total_entities - remaining_count
     
     # Skip if no meaningful split
-    if eliminated_count == 0:
+    if eliminated_count == 0 or remaining_count == 0:
         return 0.0
         
     # Initial entropy (before the split)
