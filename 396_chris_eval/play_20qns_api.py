@@ -14,7 +14,7 @@ from guesser_llm import guesser_prompt_fn, cot_guesser_prompt_fn, cot_guesser_in
 from judge_llm import judge_prompt_fn, judge_feedback
 
 
-def get_results_dir(base_output_dir: str, dataset_path: str, model_name: str, debug: bool=False, debug_dataset: bool=False) -> Path:
+def get_results_dir(base_output_dir: Path, dataset_path: Path, model_name: str, debug: bool=False, debug_dataset: bool=False) -> Path:
     """Generate results directory path based on dataset and model names.
     
     Args:
@@ -30,7 +30,7 @@ def get_results_dir(base_output_dir: str, dataset_path: str, model_name: str, de
     if debug and not debug_dataset:
         dataset_name = "debug"
     else:
-        dataset_name = Path(dataset_path).stem
+        dataset_name = dataset_path.stem
         if debug_dataset:
             dataset_name += "_debug"
     
@@ -38,7 +38,7 @@ def get_results_dir(base_output_dir: str, dataset_path: str, model_name: str, de
     clean_model_name = model_name.lower().split("/")[-1]
     
     # Construct results directory name
-    return Path(base_output_dir) / f"results__{dataset_name}__{clean_model_name}"
+    return base_output_dir / f"results__{dataset_name}__{clean_model_name}"
 
 
 def load_game_dataset(dataset_path: Path) -> Dict[str, Dict[str, List[str]]]:
@@ -259,8 +259,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Create results and checkpoint directories
-    dataset_path = "" if (args.debug and not args.debug_dataset) else args.dataset_path 
-    results_dir = get_results_dir(args.output_dir, dataset_path, args.guesser_model, args.debug, args.debug_dataset)
+    dataset_path = "" if (args.debug and not args.debug_dataset) else Path(args.dataset_path) 
+    results_dir = get_results_dir(Path(args.output_dir), dataset_path, args.guesser_model, args.debug, args.debug_dataset)
     results_dir.mkdir(parents=True, exist_ok=True)
     checkpoint_dir = results_dir / "checkpoints"
     checkpoint_dir.mkdir(exist_ok=True)
@@ -282,7 +282,7 @@ if __name__ == "__main__":
         judge_token_budget=args.judge_token_budget,
         debug=args.debug,
         debug_dataset=args.debug_dataset,
-        dataset_path=dataset_path,
+        dataset_path=str(dataset_path),
         results_dir=str(results_dir),
         checkpoint_dir=str(checkpoint_dir),
     )
