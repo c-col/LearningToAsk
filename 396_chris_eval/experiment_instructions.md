@@ -75,28 +75,37 @@ Each model variant corresponds to a running endpoint on Huggingface's Inference 
 
 ### Experiment Tracking
 
-| Model | Dataset | Priority | Person Running |
+| Model | Dataset | Priority | Person Running | Progress |
+|-------|---------|----------|----------------|----------|
+| DeepSeek R1 Distill Qwen 7B (MKA) | contrast_sets_8.json | high | Simon | Done |
+| DeepSeek R1 Distill Qwen 7B (MKA) | contrast_sets_16.json | high | Simon | Started |
+| DeepSeek R1 Distill Qwen 7B (MKA) | contrast_sets_bigbench.json | high | Shubham | ? |
+| DeepSeek R1 Distill Qwen 32B (LDR) | contrast_sets_8.json | high | Simon | Done |
+| DeepSeek R1 Distill Qwen 32B (LDR) | contrast_sets_16.json | high | Chris | ? |
+| DeepSeek R1 Distill Qwen 32B (LDR) | contrast_sets_bigbench.json | high | TBD | ? |
+
+<!-- | Model | Dataset | Priority | Person Running |
 |-------|---------|----------|----------------|
-<!-- | DeepSeek R1 Distill Qwen 1.5B (VLC) | contrast_sets_8_celebs.json | TBD | TBD |
+| DeepSeek R1 Distill Qwen 1.5B (VLC) | contrast_sets_8_celebs.json | TBD | TBD |
 | DeepSeek R1 Distill Qwen 1.5B (VLC) | contrast_sets_8_things.json | low | Simon |
 | DeepSeek R1 Distill Qwen 1.5B (VLC) | contrast_sets_8.json | low | Simon |
 | DeepSeek R1 Distill Qwen 1.5B (VLC) | contrast_sets_16.json | low | Chris |
 | DeepSeek R1 Distill Qwen 1.5B (VLC) | contrast_sets_bigbench.json | low | Shubham |
 | DeepSeek R1 Distill Qwen 7B (MKA) | contrast_sets_8_celebs.json | TBD | TBD |
-| DeepSeek R1 Distill Qwen 7B (MKA) | contrast_sets_8_things.json | low | Simon | -->
+| DeepSeek R1 Distill Qwen 7B (MKA) | contrast_sets_8_things.json | low | Simon |
 | DeepSeek R1 Distill Qwen 7B (MKA) | contrast_sets_8.json | high | Simon |
 | DeepSeek R1 Distill Qwen 7B (MKA) | contrast_sets_16.json | high | Simon |
 | DeepSeek R1 Distill Qwen 7B (MKA) | contrast_sets_bigbench.json | high | Shubham |
-<!-- | DeepSeek R1 Distill Qwen 14B (ZNU) | contrast_sets_8_celebs.json | TBD | TBD |
+| DeepSeek R1 Distill Qwen 14B (ZNU) | contrast_sets_8_celebs.json | TBD | TBD |
 | DeepSeek R1 Distill Qwen 14B (ZNU) | contrast_sets_8_things.json | low | Simon |
 | DeepSeek R1 Distill Qwen 14B (ZNU) | contrast_sets_8.json | low | Simon |
 | DeepSeek R1 Distill Qwen 14B (ZNU) | contrast_sets_16.json | low | Chris |
 | DeepSeek R1 Distill Qwen 14B (ZNU) | contrast_sets_bigbench.json | low | Shubham |
 | DeepSeek R1 Distill Qwen 32B (LDR) | contrast_sets_8_celebs.json | TBD | TBD |
-| DeepSeek R1 Distill Qwen 32B (LDR) | contrast_sets_8_things.json | low | Simon | -->
+| DeepSeek R1 Distill Qwen 32B (LDR) | contrast_sets_8_things.json | low | Simon |
 | DeepSeek R1 Distill Qwen 32B (LDR) | contrast_sets_8.json | high | Simon |
 | DeepSeek R1 Distill Qwen 32B (LDR) | contrast_sets_16.json | high | Chris |
-| DeepSeek R1 Distill Qwen 32B (LDR) | contrast_sets_bigbench.json | high | TBD |
+| DeepSeek R1 Distill Qwen 32B (LDR) | contrast_sets_bigbench.json | high | TBD | --> 
 
 ## Running Experiments
 
