@@ -10,6 +10,7 @@ class GameConfig:
     """Configuration for the 20 questions game."""
     # Model settings
     hf_token_path: Optional[str] = None
+    hf_token_path_judge: Optional[str] = None
     guesser_model: str = None
     guesser_type: str = "r1"  # Default to r1, can be "r1" or "cot"
     guesser_provide_remaining_entities: bool = False

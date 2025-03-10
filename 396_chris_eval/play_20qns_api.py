@@ -131,7 +131,7 @@ def play_game(game_state: GameState, guesser_client: ModelClient, judge_client: 
         
         # Record turn history
         turn_history.append({
-            "turn_number": game_state.turn_number,
+            "turn_number": game_state.turn_number - 1,
             "guesser_output": guesser_output,
             "question": question,
             "judge_response": judge_response,
@@ -235,6 +235,8 @@ if __name__ == "__main__":
                       help='Use private endpoint for judge model')
     parser.add_argument('--token-path', type=str, help='Path to HuggingFace token file', 
                       default=str(Path.home() / "Desktop/PhD/hf_token.txt"))
+    parser.add_argument('--token-path-judge', type=str, help='Path to HuggingFace token file for judge model', 
+                      default=str(Path.home() / "Desktop/PhD/hf_token2.txt"))
     
     # Dataset configuration
     parser.add_argument('--dataset-path', type=str, default="../data/game_sets/test/contrast_sets_8.json",
@@ -272,6 +274,7 @@ if __name__ == "__main__":
 
     config = GameConfig(
         hf_token_path=args.token_path,
+        hf_token_path_judge=args.token_path_judge,
         guesser_model=args.guesser_model,
         guesser_type=args.guesser_type,
         guesser_private_endpoint=args.guesser_private_endpoint,
@@ -299,7 +302,7 @@ if __name__ == "__main__":
     judge_client = ModelClient(
         model_name=config.judge_model, 
         private_endpoint=config.judge_private_endpoint, 
-        hf_token_path=config.hf_token_path
+        hf_token_path=config.hf_token_path_judge if config.hf_token_path_judge else config.hf_token_path
     )
 
     all_game_results = load_checkpoints(checkpoint_dir)
