@@ -1,5 +1,5 @@
-from typing import List, Optional, Dict
-from dataclasses import dataclass
+from typing import List, Optional, Dict, Tuple
+from dataclasses import dataclass, field
 from random import randint
 
 from utils import compute_information_gain
@@ -12,6 +12,7 @@ class GameConfig:
     hf_token_path: Optional[str] = None
     guesser_model: str = None
     guesser_type: str = "r1"  # Default to r1, can be "r1" or "cot"
+    guesser_provide_remaining_entities: bool = False
     judge_model: str = None
     
     guesser_private_endpoint: bool = False
@@ -19,7 +20,7 @@ class GameConfig:
 
     # Debug settings
     debug: bool = False
-
+    debug_dataset: bool = False
     # Generation settings
     use_random_seed: bool = True
     seed: Optional[int] = None
@@ -27,6 +28,10 @@ class GameConfig:
     guesser_answer_budget: int = 500
     judge_token_budget: int = 1000
 
+    # Dataset settings
+    dataset_path: str = None
+    results_dir: str = None
+    checkpoint_dir: str = None
     def __post_init__(self):
         """Validate and initialize configuration."""
         # Validate guesser type
@@ -45,11 +50,11 @@ class GameState:
     """Tracks the state and metrics of a 20 questions game."""
     target: str
     candidate_entities: List[str]
-    turn_number: int = 0
+    turn_number: int = 1
     remaining_entities: Optional[List[str]] = None
     previous_entities: Optional[List[str]] = None
     current_question: Optional[str] = None
-    past_questions: List[str] = None
+    qa_history: List[Tuple[str, str]] = field(default_factory=list)
     judge_response: Optional[Dict[str, str]] = None
     information_gain: Optional[float] = None
     ideal_information_gain: Optional[float] = None
@@ -58,8 +63,6 @@ class GameState:
         """Initialize remaining_entities as a copy of candidate_entities if not provided."""
         if self.remaining_entities is None:
             self.remaining_entities = self.candidate_entities.copy()
-        if self.past_questions is None:
-            self.past_questions = []
         # Validate that target is in candidate entities
         if self.target not in self.candidate_entities:
             raise ValueError(f"Target '{self.target}' must be in candidate_entities")
@@ -72,11 +75,12 @@ class GameState:
         self.previous_entities = self.remaining_entities.copy()
         self.turn_number += 1
         self.guesser_question = question
-        self.past_questions.append(question)
         self.judge_response = judge_response
-        
+
         # Update remaining entities based on target's answer
         target_answer = judge_response[self.target]
+        self.qa_history.append((question, target_answer))
+        
         self.remaining_entities = [
             entity for entity, answer in judge_response.items()
             if entity in self.previous_entities and answer in [target_answer, "sometimes", "unknown"]
@@ -95,6 +99,7 @@ class GameState:
             f"\n=== Game State Turn {self.turn_number} ===\n"
             f"Target: {self.target}\n"
             f"Candidate Entities (len: {len(self.candidate_entities)}): {', '.join(self.candidate_entities)}\n"
+            f"QA History: {self.qa_history}\n"
             f"Previous Entities (len: {len(self.previous_entities or [])}): {', '.join(self.previous_entities or [])}\n"
             f"Guesser Question: {self.guesser_question}\n"
             f"Judge Answer: {self.judge_response}\n"

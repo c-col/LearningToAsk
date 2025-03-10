@@ -10,16 +10,16 @@ from game_utils import GameState, GameConfig
 end_think_token = "\n</think>\n\nMy question for this turn: \\boxed{"
 
 
-def guesser_prompt_fn(entity_list: List[str]) -> str:
+def guesser_prompt_fn(game_state: GameState) -> str:
     """Generate the basic prompt for the guesser model.
     
     Args:
-        entity_list: List of possible entities to guess from
+        game_state: Current state of the game, including past questions and entities
         
     Returns:
         Formatted prompt string
     """
-    entities_string = ", ".join(entity_list)
+    entities_string = ", ".join(game_state.candidate_entities)
     return (f"Let's play 20 questions. I'm thinking of one of these items: {entities_string}. "
             "You are the guesser and your goal is to identify the mystery item by asking strategic yes/no questions that narrow down the list of possibilities. "
             "After each question, items that don't match the answer will be eliminated from the list. "
@@ -36,40 +36,50 @@ def guesser_prompt_fn(entity_list: List[str]) -> str:
             "Now ask your a question to narrow down the list of possible items.")
 
 
-def cot_prompt_fn(entity_list: List[str], game_state: GameState, provide_remaining_entities: bool = False) -> str:
+def cot_guesser_prompt_fn(game_state: GameState, config: GameConfig) -> str:
     """Chain of thought prompt that encourages explicit tracking and reasoning about game state.
     
     Args:
-        entity_list: Original list of all possible entities
-        game_state: Current state of the game including past questions and remaining entities
-        provide_remaining_entities: If True, shows current remaining entities. If False, asks model to reason about them.
+        game_state: Current state of the game including past questions and entities
+        config: Game configuration including whether to provide remaining entities
     """
-    entities_string = ", ".join(entity_list)
-    
-    # Build history of questions and answers
-    qa_history = ""
-    if game_state.past_questions:
-        qa_history = "\nPrevious questions and their impact:\n"
-        for i, q in enumerate(game_state.past_questions):
-            target_answer = game_state.judge_response[game_state.target]
-            qa_history += f"Q{i+1}: {q}\nA: {target_answer}\n"
+    entities_string = ", ".join(game_state.candidate_entities)
     
     # Base prompt parts
     base_prompt = (
         f"Let's play 20 questions. I'm thinking of one of these items: {entities_string}.\n\n"
         "You are the guesser and your goal is to identify the mystery item by asking strategic yes/no questions "
         "that narrow down the list of possibilities.\n\n"
+        "Write your chosen question inside \\boxed{}. For example: \"\\boxed{Is it a living thing?}\"\n\n"
+        "I will respond with one of four answers:\n"
+        "- \"yes\"\n"
+        "- \"no\"\n"
+        "- \"sometimes\"\n"
+        "- \"unknown\"\n\n"
+        "Now, follow the steps above to analyze the game state and ask your next question inside \\boxed{}."
+    )
+
+    # Build history of questions and answers
+    qa_history = ""
+    if game_state.qa_history:
+        qa_history = "\nPrevious questions and their impact:\n"
+        for i, (question, answer) in enumerate(game_state.qa_history):
+            qa_history += f"Q{i+1}: {question}\nA: {answer}\n"
+
+    cot_steps__1_2 = (
         "Let's think about this step by step:\n\n"
-        f"1. Starting entities ({len(entity_list)}):\n{entities_string}\n\n"
+        f"1. Starting entities ({len(game_state.candidate_entities)}):\n{entities_string}\n\n"
         f"2. Questions asked so far:{qa_history}\n\n"
     )
     
-    # Step 3 differs based on provide_remaining_entities
-    if provide_remaining_entities:
+    # Step 3 differs based on config.guesser_provide_remaining_entities
+    if config.guesser_provide_remaining_entities:
         remaining_entities_string = ", ".join(game_state.remaining_entities)
-        step3 = f"3. Currently remaining entities ({len(game_state.remaining_entities)}):\n{remaining_entities_string}\n\n"
+        cot_steps__3 = f"3. Currently remaining entities ({len(game_state.remaining_entities)}):\n{remaining_entities_string}\n\n"
     else:
-        step3 = (
+        #TODO: default behavior provides remaining entities. 
+        # we need to update this for the model to perform state tracking itself
+        cot_steps__3 = (
             "3. Let's determine the current remaining entities step by step:\n\n"
             "Step 3a. Previous state:\n"
             "<previous_state>\n"
@@ -107,7 +117,7 @@ def cot_prompt_fn(entity_list: List[str], game_state: GameState, provide_remaini
         )
     
     # Rest of the prompt
-    rest_of_prompt = (
+    cot_steps__4_6 = (
         "4. Let's categorize the remaining entities by their key characteristics:\n"
         "   [Your categorization here]\n\n"
         "5. Based on these categories, what question would best split the remaining entities?\n"
@@ -115,7 +125,27 @@ def cot_prompt_fn(entity_list: List[str], game_state: GameState, provide_remaini
         "   - Avoid questions that were already asked\n"
         "   - Consider what you learned from previous answers\n"
         "   [Your reasoning here]\n\n"
-        "6. Write your chosen question inside \\boxed{}. For example: \"\\boxed{Is it a living thing?}\"\n\n"
+        "6. My question is: \\boxed{Your question here}"
+    )
+    
+    return base_prompt + cot_steps__1_2 + cot_steps__3 + cot_steps__4_6
+
+
+def cot_guesser_initial_prompt_fn(game_state: GameState) -> str:
+    """Chain of thought prompt that encourages explicit tracking and reasoning about game state.
+    
+    Args:
+        game_state: Current state of the game including past questions and entities
+        config: Game configuration including whether to provide remaining entities
+    """
+    entities_string = ", ".join(game_state.candidate_entities)
+        
+    # Base prompt parts
+    base_prompt = (
+        f"Let's play 20 questions. I'm thinking of one of these items: {entities_string}.\n\n"
+        "You are the guesser and your goal is to identify the mystery item by asking strategic yes/no questions "
+        "that narrow down the list of possibilities.\n\n"
+        "Write your chosen question inside \\boxed{}. For example: \"\\boxed{Is it a living thing?}\"\n\n"
         "I will respond with one of four answers:\n"
         "- \"yes\"\n"
         "- \"no\"\n"
@@ -123,8 +153,19 @@ def cot_prompt_fn(entity_list: List[str], game_state: GameState, provide_remaini
         "- \"unknown\"\n\n"
         "Now, follow the steps above to analyze the game state and ask your next question inside \\boxed{}."
     )
+    # Rest of the prompt
+    cot_prompt = (
+        "Let's think about this step by step:\n\n"
+        f"1. Starting entities ({len(game_state.candidate_entities)}):\n{entities_string}\n\n"
+        "2. Let's categorize the entities by their key characteristics:\n"
+        "   [Your categorization here]\n\n"
+        "3. Based on these categories, what question would best split the remaining entities?\n"
+        "   - The ideal question should eliminate roughly half of the possibilities\n"
+        "   [Your reasoning here]\n\n"
+        "4. My question is: \\boxed{Your question here}"
+    )
     
-    return base_prompt + step3 + rest_of_prompt
+    return base_prompt + cot_prompt
 
 
 def guesser_asks(guesser_client: ModelClient, conversation: List[Dict[str, str]], config: GameConfig) -> str:
@@ -213,38 +254,46 @@ def guesser_asks(guesser_client: ModelClient, conversation: List[Dict[str, str]]
     return guesser_output, question
 
 
-def cot_guesser_asks(guesser_client: ModelClient, entity_list: List[str], game_state: GameState, config: GameConfig, provide_remaining_entities: bool = False) -> str:
+def cot_guesser_asks(guesser_client: ModelClient, conversation: List[Dict[str, str]], game_state: GameState, config: GameConfig) -> Tuple[str, str]:
     """Generate a question from the guesser model using chain of thought prompting.
     
     Args:
         guesser_client: The model client for the guesser
-        entity_list: List of all possible entities in the game
+        conversation: Full conversation history
         game_state: Current state of the game
         config: Game configuration
-        provide_remaining_entities: If True, shows current remaining entities. If False, asks model to reason about them.
         
     Returns:
-        The extracted question from the guesser's output
+        Tuple of (full guesser output, extracted question)
     """
-    # Get the chain of thought prompt
-    prompt = cot_prompt_fn(entity_list, game_state, provide_remaining_entities)
+    # Format the conversation using the chat template
     
-    # Format the prompt using the chat template
-    formatted_prompt = guesser_client.tokenizer.apply_chat_template(
-        [{"role": "user", "content": prompt}],
+    conversation_str = guesser_client.tokenizer.apply_chat_template(
+        conversation,
         add_generation_prompt=True,
         tokenize=False
     )
+    # print(f"game_state.turn_number: {game_state.turn_number}")
+    # print(ass)
+    cot_prompt = ""
+    if game_state.turn_number > 1:
+        cot_prompt = cot_guesser_prompt_fn(game_state=game_state, config=config)
 
+    formatted_prompt = conversation_str + cot_prompt
+    print(f"\n------[[Turn {game_state.turn_number} guesser chain of thought prompt]]------")
+    print(formatted_prompt)
+
+    # print(f"\n------[[guesser chain of thought prompt]]------")
+    # print(formatted_prompt)
+
+    # Generate with retry logic
     guesser_output = ""
     generation_success = False
-    
-    # Generate with retry logic
     while not generation_success:
         try:
             for token in tqdm(guesser_client.generate(
                 prompt=formatted_prompt,
-                max_new_tokens=config.guesser_think_budget,
+                max_new_tokens=None,
                 stream=True,
                 seed=config.seed,
                 stop=["}"]
@@ -259,12 +308,16 @@ def cot_guesser_asks(guesser_client: ModelClient, entity_list: List[str], game_s
             sleep(15)
             continue
 
-    # Extract and clean the question from the output
-    question = extract_question_and_clean(guesser_output)
     
     # Debug output
     print(f"\n------[[guesser chain of thought output]]------")
     print(guesser_output)
-    
-    return guesser_output, question
 
+    # Extract and clean the question from the output
+    # question = extract_question_and_clean(guesser_output)
+    
+    # # Debug output
+    # print(f"\n------[[guesser chain of thought output]]------")
+    # print(guesser_output)
+    
+    return guesser_output, "Is it a bird?"

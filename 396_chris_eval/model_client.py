@@ -29,8 +29,11 @@ class ModelClient:
                 "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
                 "deepseek-ai/DeepSeek-R1": "deepseek-ai/DeepSeek-R1",
                 "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B-Instruct": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B-Instruct",
+                "deepseek-r1-distill-qwen-1-5-vlc": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
                 "deepseek-r1-distill-qwen-7b-mka": "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
-                "qwen2-5-7b-instruct-dde": "Qwen/Qwen2-5-7B-Instruct",
+                "deepseek-r1-distill-qwen-14b-znu": "deepseek-ai/DeepSeek-R1-Distill-Qwen-14B",
+                "deepseek-r1-distill-qwen-32b-ldr": "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
+                "qwen2-5-7b-instruct-dde": "Qwen/Qwen2.5-7B-Instruct",
             }
             self.tokenizer = AutoTokenizer.from_pretrained(tokenizer_dict[model_name])
     
