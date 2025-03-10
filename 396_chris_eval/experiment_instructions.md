@@ -80,7 +80,7 @@ Each model variant corresponds to a running endpoint on Huggingface's Inference 
 | DeepSeek R1 Distill Qwen 1.5B (VLC) | contrast_sets_8_celebs.json | TBD | TBD |
 | DeepSeek R1 Distill Qwen 1.5B (VLC) | contrast_sets_8_things.json | TBD | TBD |
 | DeepSeek R1 Distill Qwen 1.5B (VLC) | contrast_sets_8.json | low | Simon |
-| DeepSeek R1 Distill Qwen 1.5B (VLC) | contrast_sets_16.json | high | Chris |
+| DeepSeek R1 Distill Qwen 1.5B (VLC) | contrast_sets_16.json | low | Chris |
 | DeepSeek R1 Distill Qwen 1.5B (VLC) | contrast_sets_bigbench.json | low | Shubham |
 | DeepSeek R1 Distill Qwen 7B (MKA) | contrast_sets_8_celebs.json | TBD | TBD |
 | DeepSeek R1 Distill Qwen 7B (MKA) | contrast_sets_8_things.json | TBD | TBD |
