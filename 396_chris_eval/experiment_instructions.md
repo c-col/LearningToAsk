@@ -65,11 +65,13 @@ Each model variant corresponds to a running endpoint on Huggingface's Inference 
 3. The experiment will fail if the corresponding endpoint is not active
 
 ### Datasets
-- `contrast_sets_8_celebs.json`: 8-entity celebrity sets (N=90)
-- `contrast_sets_8_things.json`: 8-entity object sets (N=90)
-- `contrast_sets_8.json`: General 8-entity sets (N=90)
-- `contrast_sets_16.json`: 16-entity sets (N=90)
-- `contrast_sets_bigbench.json`: BigBench-derived sets (N=29)
+- `contrast_sets_8_celebs.json`: 8-entity celebrity sets (N=90, first 10 used)
+- `contrast_sets_8_things.json`: 8-entity object sets (N=90, first 10 used)
+- `contrast_sets_8.json`: General 8-entity sets (N=90, first 10 used)
+- `contrast_sets_16.json`: 16-entity sets (N=90, first 10 used)
+- `contrast_sets_bigbench.json`: BigBench-derived sets (N=29, first 10 used)
+
+**Note**: For all datasets, we only run experiments on the first 10 examples to manage computational resources and time.
 
 ### Experiment Tracking
 
@@ -78,30 +80,31 @@ Each model variant corresponds to a running endpoint on Huggingface's Inference 
 | DeepSeek R1 Distill Qwen 1.5B (VLC) | contrast_sets_8_celebs.json | TBD | TBD |
 | DeepSeek R1 Distill Qwen 1.5B (VLC) | contrast_sets_8_things.json | TBD | TBD |
 | DeepSeek R1 Distill Qwen 1.5B (VLC) | contrast_sets_8.json | low | Simon |
-| DeepSeek R1 Distill Qwen 1.5B (VLC) | contrast_sets_16.json | TBD | TBD |
+| DeepSeek R1 Distill Qwen 1.5B (VLC) | contrast_sets_16.json | high | Chris |
 | DeepSeek R1 Distill Qwen 1.5B (VLC) | contrast_sets_bigbench.json | low | Shubham |
 | DeepSeek R1 Distill Qwen 7B (MKA) | contrast_sets_8_celebs.json | TBD | TBD |
 | DeepSeek R1 Distill Qwen 7B (MKA) | contrast_sets_8_things.json | TBD | TBD |
 | DeepSeek R1 Distill Qwen 7B (MKA) | contrast_sets_8.json | high | Simon |
-| DeepSeek R1 Distill Qwen 7B (MKA) | contrast_sets_16.json | TBD | TBD |
+| DeepSeek R1 Distill Qwen 7B (MKA) | contrast_sets_16.json | high | Chris |
 | DeepSeek R1 Distill Qwen 7B (MKA) | contrast_sets_bigbench.json | high | Shubham |
 | DeepSeek R1 Distill Qwen 14B (ZNU) | contrast_sets_8_celebs.json | TBD | TBD |
 | DeepSeek R1 Distill Qwen 14B (ZNU) | contrast_sets_8_things.json | TBD | TBD |
 | DeepSeek R1 Distill Qwen 14B (ZNU) | contrast_sets_8.json | high | Simon |
-| DeepSeek R1 Distill Qwen 14B (ZNU) | contrast_sets_16.json | high | Shubham |
-| DeepSeek R1 Distill Qwen 14B (ZNU) | contrast_sets_bigbench.json | TBD | TBD |
+| DeepSeek R1 Distill Qwen 14B (ZNU) | contrast_sets_16.json | high | Chris |
+| DeepSeek R1 Distill Qwen 14B (ZNU) | contrast_sets_bigbench.json | high | Shubham |
 | DeepSeek R1 Distill Qwen 32B (LDR) | contrast_sets_8_celebs.json | TBD | TBD |
 | DeepSeek R1 Distill Qwen 32B (LDR) | contrast_sets_8_things.json | TBD | TBD |
 | DeepSeek R1 Distill Qwen 32B (LDR) | contrast_sets_8.json | high | Simon |
-| DeepSeek R1 Distill Qwen 32B (LDR) | contrast_sets_16.json | TBD | TBD |
+| DeepSeek R1 Distill Qwen 32B (LDR) | contrast_sets_16.json | high | Chris |
 | DeepSeek R1 Distill Qwen 32B (LDR) | contrast_sets_bigbench.json | high | Shubham |
 
 ## Running Experiments
 
 ### Base Command Format
 ```bash
-python play_20qns_api.py -g <model-endpoint> -gpe -gt r1 --dataset-path "../data/game_sets/test/<dataset-file>"
+python play_20qns_api.py -g <model-endpoint> -gpe -gt r1 --dataset-path "../data/game_sets/test/<dataset-file>" --token-path <path-to-hf-inference-api-token>
 ```
+⚠️ **WARNING**: Make sure all commands below have your token path.
 
 ⚠️ **WARNING**: If you create your own endpoint, make sure to use YOUR endpoint name in the `-g` argument, not the original model name. The endpoint name must match exactly what you added to the `tokenizer_dict` in `model_client.py`. For example:
 - ❌ `-g deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B`  (wrong: original model name)
