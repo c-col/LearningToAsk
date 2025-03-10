@@ -1,2 +1,3 @@
 396_chris_eval/__pycache__/
 data/game_sets/test/outputs/results__*/checkpoints/
+# data/game_sets/test/outputs/results__contrast_sets_bigbench__deepseek-r1-distill-qwen-7b-mka/checkpoints/
