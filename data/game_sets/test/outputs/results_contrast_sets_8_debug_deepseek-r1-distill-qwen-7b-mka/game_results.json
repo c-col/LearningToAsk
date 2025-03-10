@@ -1,0 +1,284 @@
+{
+  "config": {
+    "guesser_model": "deepseek-r1-distill-qwen-7b-mka",
+    "guesser_type": "r1",
+    "judge_model": "deepseek-ai/DeepSeek-R1",
+    "guesser_private_endpoint": true,
+    "judge_private_endpoint": false,
+    "use_random_seed": true,
+    "seed": 906,
+    "guesser_think_budget": 1000,
+    "guesser_answer_budget": 200,
+    "judge_token_budget": 2000,
+    "debug": true,
+    "debug_dataset": true,
+    "dataset_path": "../data/game_sets/test/contrast_sets_8.json",
+    "results_dir": "../data/game_sets/test/outputs/results_contrast_sets_8_debug_deepseek-r1-distill-qwen-7b-mka"
+  },
+  "results": {
+    "0": {
+      "target": "fox",
+      "candidate_entities": [
+        "elk",
+        "chicken",
+        "robin",
+        "starling",
+        "fox",
+        "partridge",
+        "hamster",
+        "buffalo"
+      ],
+      "turn_history": [
+        {
+          "guesser_output": "Okay, so I'm trying to figure out the mystery item from the list: elk, chicken, robin, starling, fox, partridge, hamster, buffalo. The user has given me a series of yes/no questions to narrow down the options. Let me go through this step by step.\n\nFirst, I need to think about what information would eliminate the most items. Looking at the list, I notice that some of these are birds, and others are animals or mammals. For example, chickens, robins, starlings, foxes, partridges, buffaloes are all animals, while elk and hamsters are mammals. Wait, no, wait: hamsters are mammals, but elk is an animal too, right? Or is it a mammal? Hmm, maybe I need to clarify that. But maybe a better starting point is whether the animal can fly or not, since two of them, robins and starlings, can fly, while others might not. Let me think.\n\nIf I ask, \"Does it fly?\" and consider the answers:\n\n- Elk: Can it fly? No.\n- Chicken: Yes, chickens can fly.\n- Robin: Yes, can fly.\n- Starling: Yes, can fly.\n- Fox: No, can't fly.\n- Partridge: Yes, can fly.\n- Hamster: No, can't fly.\n- buffalo: No, can't fly.\n</think>\n\nMy question for this turn: \\boxed{Does it fly?}",
+          "question": "Does it fly?",
+          "judge_response": {
+            "buffalo": "no",
+            "chicken": "sometimes",
+            "elk": "no",
+            "robin": "yes",
+            "starling": "yes",
+            "fox": "no",
+            "partridge": "yes",
+            "hamster": "no"
+          },
+          "remaining_entities": [
+            "buffalo",
+            "chicken",
+            "elk",
+            "fox",
+            "hamster"
+          ],
+          "information_gain": 0.9544340029249652,
+          "ideal_information_gain": 1.0
+        },
+        {
+          "guesser_output": "Okay, so the user is playing 20 questions with me. They've given me a list of eight items: elk, chicken, robin, starling, fox, partridge, hamster, buffalo. My goal is to help them narrow down the possibilities by asking strategic yes/no questions.\n\nIn the first interaction, I asked, \"Does it fly?\" The user responded with \"no,\" which eliminated a few items. Specifically, I think that removed the ones that can fly, like robins, starlings, and ducks, but since ducks aren't on the list, only robins and starlings went away. Wait, but in the previous list, I only had robin and starling as fliers. So, after the first question, the remaining items are elk, fox, partridge, and hamster, and buffalo. Hmm, wait, buffalo can't fly, so that's also eliminated. So the remaining items are elk, fox, partridge, hamster.\n\nNow, the user's next question was, \"No. What is your next question?\" So, I need to think about the next best question that can eliminate as many of the remaining items as possible. The remaining items are elk, fox, partridge, and hamster. \n</think>\n\nMy question for this turn: \\boxed{Does it have feathers?}",
+          "question": "Does it have feathers?",
+          "judge_response": {
+            "elk": "no",
+            "chicken": "yes",
+            "robin": "yes",
+            "starling": "yes",
+            "fox": "no",
+            "partridge": "yes",
+            "hamster": "no",
+            "buffalo": "no"
+          },
+          "remaining_entities": [
+            "elk",
+            "fox",
+            "hamster",
+            "buffalo"
+          ],
+          "information_gain": 0.7219280948873621,
+          "ideal_information_gain": 0.9709505944546686
+        },
+        {
+          "guesser_output": "Alright, let's figure out what's going on here. The user is playing 20 questions, and I just gave them a question about whether the item has feathers. They answered \"No,\" which means it doesn't have feathers. So, I need to eliminate all items that have feathers.\n\nLooking back at the list: elk, chicken, robin, starling, fox, partridge, hamster, buffalo. The ones with feathers are chicken, robin, starling, and partridge. So, those four are out. Now the remaining candidates are elk, fox, hamster, and buffalo.\n\nNext, I should think of a question that will split the remaining four effectively. Maybe something that can give more information and narrow it down further. Perhaps I can ask about the size or whether it's a pet. But since I want to minimize the number of possibilities, maybe size is a good attribute.\n\nElk and buffalo are large animals, while fox and hamster are smaller. So, asking if it's large might help. Let's see:\n\n- Elk: Large\n- Buffalo: Large\n- Fox: Medium to Large\n- Hamster: Small\n</think>\n\nMy question for this turn: \\boxed{Is it large?}",
+          "question": "Is it large?",
+          "judge_response": {
+            "elk": "yes",
+            "buffalo": "yes",
+            "chicken": "no",
+            "robin": "no",
+            "starling": "no",
+            "fox": "no",
+            "partridge": "no",
+            "hamster": "no"
+          },
+          "remaining_entities": [
+            "fox",
+            "hamster"
+          ],
+          "information_gain": 1.0,
+          "ideal_information_gain": 1.0
+        }
+      ],
+      "won_on_turn": null,
+      "game_over": false,
+      "final_entities": [
+        "fox",
+        "hamster"
+      ]
+    },
+    "1": {
+      "target": "fawn",
+      "candidate_entities": [
+        "budgie",
+        "zebra",
+        "deer",
+        "penguin",
+        "pelican",
+        "sheep",
+        "fawn",
+        "ostrich"
+      ],
+      "turn_history": [
+        {
+          "guesser_output": "Okay, so I'm trying to figure out the mystery item from the list: budgie, zebra, deer, penguin, pelican, sheep, fawn, ostrich. The user is going to answer my questions with yes, no, sometimes, or unknown, and I'll eliminate items based on that. I need to come up with strategic questions that split the list effectively each time.\n\nFirst, let's list out all the items again to get a clear picture:\n\n1. Budgie (bird, can fly)\n2. Zebra (animal, mammal, stripes)\n3. Deer (animal, mammal, has antlers)\n4. Penguin (animal, bird, can't fly)\n5. Pelican (bird, can fly)\n6. Sheep (animal, mammal, has fleece)\n7. Fawn (animal, mammal, young deer)\n8. Ostrich (animal, bird, can't fly)\n\nSo, the categories here are birds and mammals. Birds include budgie, penguin, pelican, and ostrich. Mammals are zebra, deer, sheep, and fawn.\n\nI think the first question should be about whether it's a bird. That would split the list into two groups: birds and mammals. So, maybe I should ask, \"Is it a bird?\"\n\nIf the answer is yes, then we're left with budgie, penguin, pelican, and ostrich. If no, then we're left with zebra, deer, sheep, and fawn.\n</think>\n\nMy question for this turn: \\boxed{Is it a bird?}",
+          "question": "Is it a bird?",
+          "judge_response": {
+            "budgie": "yes",
+            "zebra": "no",
+            "deer": "no",
+            "penguin": "yes",
+            "pelican": "yes",
+            "sheep": "no",
+            "fawn": "no",
+            "ostrich": "yes"
+          },
+          "remaining_entities": [
+            "zebra",
+            "deer",
+            "sheep",
+            "fawn"
+          ],
+          "information_gain": 1.0,
+          "ideal_information_gain": 1.0
+        },
+        {
+          "guesser_output": "Alright, the user just told me that the answer to my first question, \"Is it a bird?\", was \"no.\" So, I need to figure out what to do next. My goal is to narrow down the list of possible items using yes/no questions. The initial list had eight items: budgie, zebra, deer, penguin, pelican, sheep, fawn, and ostrich.\n\nSince \"no\" was the answer, I need to eliminate all items that are birds. Looking at the list, birds are budgie, penguin, and pelican. So, after this answer, those three are out. That leaves me with five items: zebra, deer, sheep, fawn, and ostrich.\n\nNow, I need to come up with a question that will split the remaining five items as effectively as possible. I should think about what characteristic these remaining animals have in common that can help me differentiate them. One good way is to ask about whether they have fur or not because sheep, fawn, and ostriches are mammals and have fur, while zebras and deer are also mammals but have different features.\n\nSo, asking, \"Does it have fur?\" should work well. Zebras, deer, sheep, fawn, and ostrich all have fur, so the answer will be \"yes.\" Wait, but that doesn't help me narrow it down much because all of them do have fur. Hmm, maybe that's not the best question.\n</think>\n\nMy question for this turn: \\boxed{Does it have fur?}",
+          "question": "Does it have fur?",
+          "judge_response": {
+            "sheep": "yes",
+            "budgie": "no",
+            "zebra": "yes",
+            "deer": "yes",
+            "penguin": "no",
+            "pelican": "no",
+            "fawn": "yes",
+            "ostrich": "no"
+          },
+          "remaining_entities": [
+            "sheep",
+            "zebra",
+            "deer",
+            "fawn"
+          ],
+          "information_gain": 0.0,
+          "ideal_information_gain": 1.0
+        },
+        {
+          "guesser_output": "Alright, let's figure out what's going on here. The user is playing a game similar to 20 Questions, trying to guess an animal I'm thinking of from a list: budgie, zebra, deer, penguin, pelican, sheep, fawn, and ostrich.\n\nFirst, the user starts by asking if it's a bird. My response was \"no,\" which eliminated the bird-related options: budgie and pelican. So, the remaining possible animals are zebra, deer, penguin, sheep, fawn, and ostrich.\n\nNext, the user asks if it has fur, and I answered \"yes.\" That eliminates penguins, which don't have fur (though they have a layer of duck down). So now, the remaining animals are zebra, deer, sheep, fawn, and ostrich.\n\nNow, the user is asking for the next question. I need to think of a question that will split the remaining options effectively. Let's see: the animals left are zebra, deer, sheep, fawn, and ostrich. All of these are mammals except maybe the zebra, which is also a mammal. Wait, actually, all these are mammals. Hmm, maybe I need to find a different angle.\n</think>\n\nMy question for this turn: \\boxed{Does it have fur?}",
+          "question": "Does it have fur?",
+          "judge_response": {
+            "sheep": "yes",
+            "budgie": "no",
+            "zebra": "yes",
+            "deer": "yes",
+            "penguin": "no",
+            "pelican": "no",
+            "fawn": "yes",
+            "ostrich": "no"
+          },
+          "remaining_entities": [
+            "sheep",
+            "zebra",
+            "deer",
+            "fawn"
+          ],
+          "information_gain": 0.0,
+          "ideal_information_gain": 1.0
+        }
+      ],
+      "won_on_turn": null,
+      "game_over": false,
+      "final_entities": [
+        "sheep",
+        "zebra",
+        "deer",
+        "fawn"
+      ]
+    },
+    "2": {
+      "target": "zebra",
+      "candidate_entities": [
+        "pelican",
+        "bear",
+        "zebra",
+        "walrus",
+        "vulture",
+        "chickadee",
+        "finch",
+        "otter"
+      ],
+      "turn_history": [
+        {
+          "guesser_output": "Okay, so I'm trying to figure out the mystery item from the list: pelican, bear, zebra, walrus, vulture, chickadee, finch, otter. The user's going to ask a series of yes/no questions, and I have to respond with \"yes,\" \"no,\" \"sometimes,\" or \"unknown.\" After each question, the incorrect items will be eliminated. \n\nFirst, I need to think about what information would be most useful to narrow down the list. Let's see... Maybe starting with whether the animal can fly or not. That could split the list quite a bit because some of these animals can fly, while others cannot. Let me list them out:\n\n- Pelican: Can fly\n- Bear: Cannot fly\n- Zebra: Cannot fly (they can't fly at all)\n- Walrus: Cannot fly\n- Vulture: Can fly\n- Chickadee: Can fly\n- Finch: Can fly\n- Otter: Cannot fly\n\nSo, if I ask, \"Can it fly?\" and the answer is \"yes,\" that would eliminate the bear, zebra, walrus, and otter. That's a big elimination. Alternatively, if the answer is \"no,\" that would eliminate the pelican, vulture, chickadee, and finch. \n</think>\n\nMy question for this turn: \\boxed{Can it fly?}",
+          "question": "Can it fly?",
+          "judge_response": {
+            "pelican": "yes",
+            "bear": "no",
+            "zebra": "no",
+            "walrus": "no",
+            "vulture": "yes",
+            "chickadee": "yes",
+            "finch": "yes",
+            "otter": "no"
+          },
+          "remaining_entities": [
+            "bear",
+            "zebra",
+            "walrus",
+            "otter"
+          ],
+          "information_gain": 1.0,
+          "ideal_information_gain": 1.0
+        },
+        {
+          "guesser_output": "Alright, let's figure out what the user is asking for here. They provided a game of 20 questions where they're trying to guess an animal from a specific list based on my yes/no answers. My previous answer was \"Yes\" because, for example, if I had asked \"Can it fly?\" and they answered \"Yes,\" I would have eliminated all non-flying animals. But they just said \"No\" to that question.\n\nSo, now I need to come up with the next question. The goal is to eliminate as many options as possible with each question. The remaining items after the first question (assuming I answered \"Yes\" to \"Can it fly?\") would be: pelican, bear, zebra, otter, vulture, chickadee, finch, because those are the ones that can fly.\n\nWait, actually, let me double-check which ones can fly. Pelicans can't fly, right? They have wings but don't fly like birds. Bears don't fly. Zebras don't fly. Otters don't fly. Vultures don't fly. Chickadees and finches do fly. So, if I answered \"Yes\" to \"Can it fly?\", the remaining items would be chickadee and finch.\n</think>\n\nMy question for this turn: \\boxed{Does it have feathers?}",
+          "question": "Does it have feathers?",
+          "judge_response": {
+            "pelican": "yes",
+            "bear": "no",
+            "zebra": "no",
+            "walrus": "no",
+            "vulture": "yes",
+            "chickadee": "yes",
+            "finch": "yes",
+            "otter": "no"
+          },
+          "remaining_entities": [
+            "bear",
+            "zebra",
+            "walrus",
+            "otter"
+          ],
+          "information_gain": 0.0,
+          "ideal_information_gain": 1.0
+        },
+        {
+          "guesser_output": "Alright, let's figure out what's going on here. The user is playing 20 questions, and I've been helping them narrow down the list of possible items: pelican, bear, zebra, walrus, vulture, chickadee, finch, and otter.\n\nFirst, they asked if it can fly, and the answer was \"no.\" So, I need to eliminate all the items that can fly. From the list, I know pelicans and vultures can fly, so they're out. That leaves us with bear, zebra, walrus, chickadee, and finch.\n\nNext, they asked if it has feathers, and the answer was \"no.\" Feathers are a good clue because many animals have them, but some don't, like otters. So, eliminating items without feathers would get rid of chickadee, finch, and pelican (though pelican was already eliminated). That leaves bear, zebra, and walrus.\n\nNow, the user is asking for the next question. I need to think about what would narrow it down the most. Among the remaining options\u2014bear, zebra, and walrus\u2014zebras don't have scales, whereas bears and walruses do. So asking about the presence of scales would effectively eliminate zebras.\n</think>\n\nMy question for this turn: \\boxed{Does it have scales?}",
+          "question": "Does it have scales?",
+          "judge_response": {
+            "pelican": "no",
+            "bear": "no",
+            "zebra": "no",
+            "walrus": "no",
+            "vulture": "no",
+            "chickadee": "no",
+            "finch": "no",
+            "otter": "no"
+          },
+          "remaining_entities": [
+            "bear",
+            "zebra",
+            "walrus",
+            "otter"
+          ],
+          "information_gain": 0.0,
+          "ideal_information_gain": 1.0
+        }
+      ],
+      "won_on_turn": null,
+      "game_over": false,
+      "final_entities": [
+        "bear",
+        "zebra",
+        "walrus",
+        "otter"
+      ]
+    }
+  }
+}
