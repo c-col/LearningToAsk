@@ -38,7 +38,7 @@ def get_results_dir(base_output_dir: str, dataset_path: str, model_name: str, de
     clean_model_name = model_name.lower().split("/")[-1]
     
     # Construct results directory name
-    return Path(base_output_dir) / f"results_{dataset_name}_{clean_model_name}"
+    return Path(base_output_dir) / f"results__{dataset_name}__{clean_model_name}"
 
 
 def load_game_dataset(dataset_path: Path) -> Dict[str, Dict[str, List[str]]]:
