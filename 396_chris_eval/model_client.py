@@ -36,6 +36,12 @@ class ModelClient:
                 "deepseek-r1-distill-qwen-14b-znu": "deepseek-ai/DeepSeek-R1-Distill-Qwen-14B",
                 "deepseek-r1-distill-qwen-32b-ldr": "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
                 # add your endpoint:tokenizer map here
+
+                #shubham
+                "deepseek-r1-distill-qwen-1-5-ndz" :"deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+                "deepseek-r1-distill-qwen-7b-fdh" : "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+                "deepseek-r1-distill-qwen-14b-gcd" : "deepseek-ai/DeepSeek-R1-Distill-Qwen-14B",
+                "deepseek-r1-distill-qwen-32b-ifc" : "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B"
                 
             }
             self.tokenizer = AutoTokenizer.from_pretrained(tokenizer_dict[model_name])

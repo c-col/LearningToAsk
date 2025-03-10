@@ -237,6 +237,10 @@ if __name__ == "__main__":
                       default=str(Path.home() / "Desktop/PhD/hf_token.txt"))
     parser.add_argument('--token-path-judge', type=str, help='Path to HuggingFace token file for judge model', 
                       default=str(Path.home() / "Desktop/PhD/hf_token3.txt"))
+    # parser.add_argument('--token-path', type=str, help='Path to HuggingFace token file', 
+    #                   default=str(Path.home() / "Documents/VScode/hf_token_guesser/hf-token.txt"))
+    # parser.add_argument('--token-path-judge', type=str, help='Path to HuggingFace token file for judge model', 
+    #                   default=str(Path.home() / "Documents/VScode/hf_token_judge/hf-token.txt"))
     
     # Dataset configuration
     parser.add_argument('--dataset-path', type=str, default="../data/game_sets/test/contrast_sets_8.json",
