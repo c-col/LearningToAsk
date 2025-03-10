@@ -131,6 +131,7 @@ def play_game(game_state: GameState, guesser_client: ModelClient, judge_client: 
         
         # Record turn history
         turn_history.append({
+            "turn_number": game_state.turn_number,
             "guesser_output": guesser_output,
             "question": question,
             "judge_response": judge_response,
@@ -154,7 +155,8 @@ def play_game(game_state: GameState, guesser_client: ModelClient, judge_client: 
         "turn_history": turn_history,
         "won_on_turn": won_on_turn_number,
         "game_over": game_over,
-        "final_entities": game_state.remaining_entities
+        "final_entities": game_state.remaining_entities,
+        "number_of_turns": len(turn_history)
     }
 
 
@@ -344,8 +346,9 @@ if __name__ == "__main__":
             save_checkpoint(checkpoint_dir, "0", game_result)
     else:
         # Load and run games from dataset
-        print(f"\nLoading games from {dataset_path}...")
+        print(f"\nLoading first 10 games from {dataset_path}...")
         games = load_game_dataset(dataset_path)
+        games = dict(list(games.items())[:10])
         
         for game_idx, game in games.items():
             # Skip games that have already been completed
