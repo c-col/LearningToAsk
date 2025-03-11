@@ -8,16 +8,25 @@ Dataset: 8 things (C = 8)
 Win Rate: 10.00%
 Avg Turns per Win: 19.0
 Avg Info Gain: 0.119
+Avg Ideal Info Gain: 0.758
+Zero Gain Questions: 86.93% (173 of 199)
+Repeated Questions: 66.83% (133 of 199)
 
 Dataset: 16 things (C = 16)
 Win Rate: 20.00%
 Avg Turns per Win: 4.5
 Avg Info Gain: 0.173
+Avg Ideal Info Gain: 0.976
+Zero Gain Questions: 81.07% (137 of 169)
+Repeated Questions: 69.82% (118 of 169)
 
 Dataset: bigbench (C = 29)
 Win Rate: 10.00%
 Avg Turns per Win: 18.0
 Avg Info Gain: 0.099
+Avg Ideal Info Gain: 0.902
+Zero Gain Questions: 83.84% (166 of 198)
+Repeated Questions: 81.82% (162 of 198)
 
 32B Performance Across Datasets:
 ------------------------------
@@ -26,16 +35,25 @@ Dataset: 8 things (C = 8)
 Win Rate: 80.00%
 Avg Turns per Win: 8.5
 Avg Info Gain: 0.238
+Avg Ideal Info Gain: 0.332
+Zero Gain Questions: 68.52% (74 of 108)
+Repeated Questions: 46.30% (50 of 108)
 
 Dataset: 16 things (C = 16)
 Win Rate: 50.00%
 Avg Turns per Win: 13.0
 Avg Info Gain: 0.234
+Avg Ideal Info Gain: 0.776
+Zero Gain Questions: 73.33% (120 of 165)
+Repeated Questions: 60.00% (99 of 165)
 
 Dataset: bigbench (C = 29)
 Win Rate: 20.00%
 Avg Turns per Win: 12.5
 Avg Info Gain: 0.172
+Avg Ideal Info Gain: 0.833
+Zero Gain Questions: 76.22% (141 of 185)
+Repeated Questions: 63.78% (118 of 185)
 
 7B vs 32B Comparison:
 ------------------------------
@@ -46,11 +64,17 @@ Dataset: 8 things (C = 8)
 Win Rate: 10.00%
 Avg Turns per Win: 19.0
 Avg Info Gain: 0.119
+Avg Ideal Info Gain: 0.758
+Zero Gain Questions: 86.93% (173 of 199)
+Repeated Questions: 66.83% (133 of 199)
 
 32B:
 Win Rate: 80.00%
 Avg Turns per Win: 8.5
 Avg Info Gain: 0.238
+Avg Ideal Info Gain: 0.332
+Zero Gain Questions: 68.52% (74 of 108)
+Repeated Questions: 46.30% (50 of 108)
 
 Dataset: 16 things (C = 16)
 
@@ -58,11 +82,17 @@ Dataset: 16 things (C = 16)
 Win Rate: 20.00%
 Avg Turns per Win: 4.5
 Avg Info Gain: 0.173
+Avg Ideal Info Gain: 0.976
+Zero Gain Questions: 81.07% (137 of 169)
+Repeated Questions: 69.82% (118 of 169)
 
 32B:
 Win Rate: 50.00%
 Avg Turns per Win: 13.0
 Avg Info Gain: 0.234
+Avg Ideal Info Gain: 0.776
+Zero Gain Questions: 73.33% (120 of 165)
+Repeated Questions: 60.00% (99 of 165)
 
 Dataset: bigbench (C = 29)
 
@@ -70,8 +100,14 @@ Dataset: bigbench (C = 29)
 Win Rate: 10.00%
 Avg Turns per Win: 18.0
 Avg Info Gain: 0.099
+Avg Ideal Info Gain: 0.902
+Zero Gain Questions: 83.84% (166 of 198)
+Repeated Questions: 81.82% (162 of 198)
 
 32B:
 Win Rate: 20.00%
 Avg Turns per Win: 12.5
 Avg Info Gain: 0.172
+Avg Ideal Info Gain: 0.833
+Zero Gain Questions: 76.22% (141 of 185)
+Repeated Questions: 63.78% (118 of 185)

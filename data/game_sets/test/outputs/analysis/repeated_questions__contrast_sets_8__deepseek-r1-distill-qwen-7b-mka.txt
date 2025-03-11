@@ -1,0 +1,60 @@
+Repeated Questions Analysis: 7B on 8 things (C = 8)
+==================================================
+
+Game 7:
+------------------------------
+Asked 9 times: is it a marine animal
+Asked 8 times: does it live in water
+Asked 2 times: is it a land animal
+
+Game 0:
+------------------------------
+Asked 13 times: are you a bird
+Asked 4 times: are you a mammal
+
+Game 3:
+------------------------------
+Asked 15 times: are you a bird that can flyshort distances
+Asked 2 times: are you a bird that can fly longer distances
+
+Game 9:
+------------------------------
+Asked 10 times: is it a furbearing animal
+Asked 4 times: is it a type of clothing
+Asked 3 times: is it warm
+Asked 2 times: is it made of leather
+
+Game 4:
+------------------------------
+Asked 12 times: is it a large bird
+Asked 2 times: is it a raptor
+Asked 2 times: is it a falcon
+
+Game 5:
+------------------------------
+Asked 12 times: how many legs does it have
+Asked 3 times: how tall is it
+
+Game 1:
+------------------------------
+Asked 8 times: are you a bird
+Asked 6 times: are you a mammal
+
+Game 2:
+------------------------------
+Asked 8 times: are you a bird that lives in cold temperatures
+Asked 5 times: are you a bear
+Asked 2 times: are you found in cold temperatures
+
+Game 6:
+------------------------------
+Asked 7 times: does it have fur
+Asked 3 times: does it live in a forest
+Asked 2 times: is it a pet
+Asked 2 times: does it bury its nuts
+Asked 2 times: is it a small animal
+Asked 2 times: does it live in a tree
+
+Game 8:
+------------------------------
+Asked 11 times: are you a big animal

@@ -1,0 +1,67 @@
+Repeated Questions Analysis: 32B on bigbench (C = 29)
+==================================================
+
+Game 6:
+------------------------------
+Asked 13 times: is it something you can wear
+Asked 3 times: is it an object
+Asked 3 times: is it made of fabric
+
+Game 3:
+------------------------------
+Asked 8 times: is it a mode of transportation
+Asked 3 times: is it a living thing
+Asked 3 times: is it something you can wear
+Asked 3 times: is it something you can use to transport yourself
+Asked 2 times: is it an object
+
+Game 7:
+------------------------------
+Asked 13 times: is it something you can wear
+Asked 2 times: is it an object
+Asked 2 times: is it made of fabric
+
+Game 2:
+------------------------------
+Asked 7 times: is it something you can eat
+Asked 5 times: is it a mode of transportation
+Asked 3 times: is it something you can use to stay dry
+Asked 2 times: is it an object
+
+Game 4:
+------------------------------
+Asked 8 times: is it something you can use to transport yourself
+Asked 4 times: is it an object
+Asked 4 times: is it something you can wear
+
+Game 8:
+------------------------------
+Asked 6 times: is it something you can wear
+Asked 5 times: is it a mode of transportation
+Asked 4 times: is it an object
+Asked 2 times: is it a living thing
+
+Game 9:
+------------------------------
+Asked 6 times: is it something you can wear
+Asked 5 times: is it an object
+Asked 3 times: is it a living thing
+Asked 3 times: is it a mode of transportation
+
+Game 1:
+------------------------------
+Asked 6 times: is it an object
+Asked 6 times: is it something you can use to transport yourself
+Asked 2 times: is it something you can wear
+
+Game 0:
+------------------------------
+Asked 6 times: is it an object used for entertainment
+Asked 3 times: is it an object
+Asked 2 times: is it a living thing
+Asked 2 times: is it something you can use for transportation
+Asked 2 times: is it something you can use for communication
+
+Game 5:
+------------------------------
+Asked 2 times: is it an animal

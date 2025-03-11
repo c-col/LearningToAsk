@@ -1,0 +1,50 @@
+Repeated Questions Analysis: 7B on 16 things (C = 16)
+==================================================
+
+Game 1:
+------------------------------
+Asked 12 times: is it a mammal
+Asked 7 times: is it a bird
+
+Game 2:
+------------------------------
+Asked 11 times: is it a mammal
+Asked 4 times: is it a penguin
+Asked 3 times: is it a bird
+
+Game 7:
+------------------------------
+Asked 10 times: is it a beaver
+Asked 5 times: is it a mammal
+Asked 3 times: is it a carnivore
+
+Game 9:
+------------------------------
+Asked 15 times: is it a furlined item
+Asked 2 times: is it an animal
+
+Game 3:
+------------------------------
+Asked 7 times: is it a flightless bird
+Asked 6 times: is it a bird
+Asked 3 times: is it a mammal
+Asked 2 times: is it a water animal
+
+Game 4:
+------------------------------
+Asked 14 times: is it small
+Asked 2 times: is it a bird
+
+Game 6:
+------------------------------
+Asked 6 times: is it a mammal
+Asked 4 times: is it a wild animal
+Asked 4 times: is it a herbivore
+Asked 3 times: is it a carnivore
+Asked 2 times: is it a bird
+
+Game 8:
+------------------------------
+Asked 10 times: is it made of fur
+Asked 5 times: is it warm
+Asked 2 times: is it an animal

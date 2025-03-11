@@ -1,0 +1,43 @@
+Repeated Questions Analysis: 32B on 16 things (C = 16)
+==================================================
+
+Game 1:
+------------------------------
+Asked 16 times: is it a mammal
+
+Game 9:
+------------------------------
+Asked 14 times: is it typically used to cover the head or neck
+Asked 2 times: is it typically associated with warmth
+
+Game 0:
+------------------------------
+Asked 7 times: does it typically live in herds
+Asked 5 times: is it typically found in rural areas
+Asked 4 times: is it a marine mammal
+
+Game 5:
+------------------------------
+Asked 13 times: does it typically live in cold climates
+Asked 2 times: does it have webbed feet
+
+Game 8:
+------------------------------
+Asked 14 times: is it typically raised for meat
+
+Game 4:
+------------------------------
+Asked 7 times: does it primarily live in or near water
+Asked 7 times: is it typically kept as a pet
+
+Game 6:
+------------------------------
+Asked 12 times: does it typically live in cold climates
+Asked 2 times: is it a mammal
+
+Game 3:
+------------------------------
+Asked 5 times: is it a domesticated bird
+Asked 2 times: does it live in water
+Asked 2 times: is it a chicken
+Asked 2 times: is it an emu

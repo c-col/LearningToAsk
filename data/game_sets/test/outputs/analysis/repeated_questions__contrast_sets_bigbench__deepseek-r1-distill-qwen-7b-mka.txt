@@ -1,0 +1,50 @@
+Repeated Questions Analysis: 7B on bigbench (C = 29)
+==================================================
+
+Game 0:
+------------------------------
+Asked 17 times: is it manmade
+Asked 2 times: is it a solid object
+
+Game 1:
+------------------------------
+Asked 10 times: does it have a nucleus
+Asked 9 times: is it manmade
+
+Game 2:
+------------------------------
+Asked 17 times: is it manmade
+Asked 2 times: is it a living thing
+
+Game 4:
+------------------------------
+Asked 18 times: is it manmade
+
+Game 3:
+------------------------------
+Asked 17 times: is it manmade
+
+Game 6:
+------------------------------
+Asked 10 times: can it fly
+Asked 8 times: is it manmade
+
+Game 7:
+------------------------------
+Asked 10 times: can it fly
+Asked 8 times: is it manmade
+
+Game 8:
+------------------------------
+Asked 10 times: can it fly
+Asked 8 times: is it manmade
+
+Game 9:
+------------------------------
+Asked 10 times: can it fly
+Asked 8 times: is it manmade
+
+Game 5:
+------------------------------
+Asked 14 times: does it have fur
+Asked 2 times: is it a living thing

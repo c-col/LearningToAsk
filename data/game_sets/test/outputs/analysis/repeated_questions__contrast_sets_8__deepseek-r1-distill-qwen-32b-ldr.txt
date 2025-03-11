@@ -1,0 +1,38 @@
+Repeated Questions Analysis: 32B on 8 things (C = 8)
+==================================================
+
+Game 1:
+------------------------------
+Asked 11 times: is it a type of deer
+Asked 7 times: is it a sheep
+
+Game 9:
+------------------------------
+Asked 12 times: is it made of fabric
+Asked 2 times: is it a type of footwear
+
+Game 3:
+------------------------------
+Asked 7 times: is it commonly kept as a pet
+Asked 2 times: is it primarily raised for its meat
+Asked 2 times: is it commonly raised for eggs
+
+Game 4:
+------------------------------
+Asked 6 times: is it a bird of prey
+
+Game 6:
+------------------------------
+Asked 3 times: is it a rodent
+Asked 2 times: does it have stripes
+Asked 2 times: is it commonly kept as a pet
+Asked 2 times: is it a bear
+
+Game 2:
+------------------------------
+Asked 3 times: is it a bear
+Asked 2 times: is it primarily found in or near water
+
+Game 0:
+------------------------------
+Asked 2 times: is it a small animal
