@@ -1,0 +1,52 @@
+GAME OVERVIEW
+==================================================
+Game Index: 8
+Target: deer
+Candidate Entities: shoes, fawn, deer, belt, gorilla, bra, elephant, tie
+Won on Turn: 2
+Final Entities: deer
+Number of Turns: 2
+Game Over: True
+
+TURN HISTORY
+==================================================
+
+TURN 1
+--------------------------------------------------
+Guesser Output: Alright, so I need to figure out what the mystery item is from the list: shoes, fawn, deer, belt, gorilla, bra, elephant, tie. There are eight items, so I need to come up with a yes/no question that splits this list as evenly as possible. Let me think about the characteristics of these items.
+
+First, I notice that some are animals (fawn, deer, gorilla, elephant) and others are clothing/accessories (shoes, belt, bra, tie). That seems like a good starting point. If I ask if the item is a living thing, that would separate the animals from the clothing items. If the answer is yes, we're left with fawn, deer, gorilla, elephant. If no, it's shoes, belt, bra, tie. That splits the list into two equal groups of four each. 
+
+Alternatively, I could think about other attributes, like whether they are worn on the upper body or lower body, but that might not split the list as evenly. For example, shoes and belt are lower body, while bra and tie are upper body. But that's not as straightforward because, for example, a belt can be considered lower body, but a tie is definitely upper. However, the initial split between living and non-living seems more effective because it's a clear distinction and narrows it down quickly.
+</think>
+
+My question for this turn: \boxed{Is it a living thing?}
+
+----------
+Question: Is it a living thing?
+Answer: yes
+Remaining Entities (4): fawn, deer, gorilla, elephant
+Information Gain: 1.000
+Ideal Information Gain: 1.000
+
+TURN 2
+--------------------------------------------------
+Guesser Output: Alright, the user has given me a list of items: shoes, fawn, deer, belt, gorilla, bra, elephant, tie. They've confirmed that the mystery item is a living thing, so I need to eliminate the non-living ones. 
+
+Looking at the list, shoes, belt, bra, and tie are all non-living items. So, they're out. That leaves me with fawn, deer, gorilla, and elephant. 
+
+Now, I need to figure out what's next. These remaining items are all animals, so the next question should help narrow it down further. Since fawn, deer, and elephant are mammals, but gorilla is also a mammal. Wait, maybe I should think about other characteristics. 
+
+Perhaps considering size could be effective. Gorilla is the largest among them, while fawn is a young deer. Maybe asking if it's a large animal would help. If the answer is yes, it's either gorilla or elephant. If no, it's fawn or deer. 
+
+Alternatively, I could consider if it's a type of deer, which would include fawn and deer. But that might not split the group as effectively. 
+</think>
+
+My question for this turn: \boxed{Is it a type of deer?}
+
+----------
+Question: Is it a type of deer?
+Answer: yes
+Remaining Entities (1): deer
+Information Gain: 0.811
+Ideal Information Gain: 1.000

@@ -83,8 +83,7 @@ def plot_model_comparison(results: Dict[str, Dict[str, Tuple[float, float, float
         results: Dictionary mapping model sizes to dataset results
         plots_dir: Directory to save plots
     """
-    # datasets = ["8 things (C = 8)", "16 things (C = 16)", "bigbench (C = 29)"]
-    datasets = ["8 things (C = 8)", "16 things (C = 16)"]
+    datasets = ["8 things (C = 8)", "16 things (C = 16)", "bigbench (C = 29)"]
     metrics = ["Win Rate", "Avg Turns per Win", "Avg Info Gain", "Avg Ideal Info Gain"]
     
     fig, axes = plt.subplots(1, 4, figsize=(20, 5))
@@ -193,6 +192,40 @@ def find_failed_game_with_zero_gain(results: Dict) -> Tuple[str, Dict]:
                     
     return None, None
 
+def find_successful_game(results: Dict) -> Tuple[str, Dict]:
+    """Find a game where the model successfully won.
+    
+    Args:
+        results: Dictionary containing game results
+        
+    Returns:
+        Tuple of (game_idx, game_data) or (None, None) if no such game found
+    """
+    if not results:
+        return None, None
+        
+    games = results["results"]
+    
+    # First try to find a game with high information gain
+    best_game_idx = None
+    best_game = None
+    best_avg_info_gain = -1
+    
+    for game_idx, game in games.items():
+        # Check if game was won
+        if game["won_on_turn"] is not None:
+            # Calculate average information gain
+            total_info_gain = sum(turn["information_gain"] for turn in game["turn_history"] 
+                                if turn["information_gain"] is not None)
+            avg_info_gain = total_info_gain / len(game["turn_history"])
+            
+            if avg_info_gain > best_avg_info_gain:
+                best_avg_info_gain = avg_info_gain
+                best_game_idx = game_idx
+                best_game = game
+    
+    return best_game_idx, best_game
+
 def format_judge_response(response):
     """Format judge response nicely.
     
@@ -261,15 +294,16 @@ def create_game_text_summary(game_idx: str, game: Dict) -> str:
     
     return "\n".join(lines)
 
-def save_failed_game_analysis(game_idx: str, game: Dict, model: str, dataset: str, failed_games_dir: Path) -> str:
-    """Save failed game data to JSON and TXT files.
+def save_game_analysis(game_idx: str, game: Dict, model: str, dataset: str, output_dir: Path, prefix: str = "game") -> str:
+    """Save game data to JSON and TXT files.
     
     Args:
         game_idx: Index of the game
         game: Game data dictionary
         model: Model name
         dataset: Dataset name
-        failed_games_dir: Directory to save analysis files
+        output_dir: Directory to save analysis files
+        prefix: Prefix for the filename (default: "game")
         
     Returns:
         Path to the saved JSON file
@@ -296,18 +330,18 @@ def save_failed_game_analysis(game_idx: str, game: Dict, model: str, dataset: st
         model_name = "deepseek-r1-distill-qwen-32b-ldr"
     
     # Base filename
-    base_filename = f"failed_game__{dataset_name}__{model_name}__game_{game_idx}"
+    base_filename = f"{prefix}__{dataset_name}__{model_name}__game_{game_idx}"
     
     # Save JSON file
     json_filename = f"{base_filename}.json"
-    json_filepath = failed_games_dir / json_filename
+    json_filepath = output_dir / json_filename
     
     with open(json_filepath, 'w') as f:
         json.dump(game_data, f, indent=2)
     
     # Save TXT file
     txt_filename = f"{base_filename}.txt"
-    txt_filepath = failed_games_dir / txt_filename
+    txt_filepath = output_dir / txt_filename
     
     with open(txt_filepath, 'w') as f:
         f.write(create_game_text_summary(game_idx, game))
@@ -317,17 +351,20 @@ def save_failed_game_analysis(game_idx: str, game: Dict, model: str, dataset: st
 def main():
     base_dir = "../data/game_sets/test/outputs"
     models = ["7B", "32B"]
-    datasets = ["8 things (C = 8)", "16 things (C = 16)"]
+    datasets = ["8 things (C = 8)", "16 things (C = 16)", "bigbench (C = 29)"]
     
     # Create output directories
     plots_dir = Path("../data/game_sets/test/outputs/plots")
     failed_games_dir = Path("../data/game_sets/test/outputs/failed_games")
+    successful_games_dir = Path("../data/game_sets/test/outputs/successful_games")
     plots_dir.mkdir(exist_ok=True)
     failed_games_dir.mkdir(exist_ok=True)
+    successful_games_dir.mkdir(exist_ok=True)
 
-    # Collect results and find failed games
+    # Collect results and find games
     results = {model: {} for model in models}
     failed_games_found = False
+    successful_games_found = False
     
     for model in models:
         for dataset in datasets:
@@ -340,14 +377,24 @@ def main():
                 # Find and analyze failed games
                 game_idx, failed_game = find_failed_game_with_zero_gain(data)
                 if failed_game:
-                    filename = save_failed_game_analysis(game_idx, failed_game, model, dataset, failed_games_dir)
+                    filename = save_game_analysis(game_idx, failed_game, model, dataset, failed_games_dir, "failed_game")
                     failed_games_found = True
                     print(f"Failed game analysis saved to: {filename}")
+                
+                # Find and analyze successful games
+                game_idx, successful_game = find_successful_game(data)
+                if successful_game:
+                    filename = save_game_analysis(game_idx, successful_game, model, dataset, successful_games_dir, "successful_game")
+                    successful_games_found = True
+                    print(f"Successful game analysis saved to: {filename}")
             else:
                 results[model][dataset] = (0.0, 0.0, 0.0, 0.0)
     
     if not failed_games_found:
         print("\nNo failed games with consecutive zero information gain found.")
+        
+    if not successful_games_found:
+        print("\nNo successful games found.")
     
     # Print analysis
     print("\nModel Performance Analysis")
