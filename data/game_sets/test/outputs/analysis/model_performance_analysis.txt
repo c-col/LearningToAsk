@@ -1,0 +1,77 @@
+Model Performance Analysis
+==================================================
+
+7B Performance Across Datasets:
+------------------------------
+
+Dataset: 8 things (C = 8)
+Win Rate: 10.00%
+Avg Turns per Win: 19.0
+Avg Info Gain: 0.119
+
+Dataset: 16 things (C = 16)
+Win Rate: 20.00%
+Avg Turns per Win: 4.5
+Avg Info Gain: 0.173
+
+Dataset: bigbench (C = 29)
+Win Rate: 10.00%
+Avg Turns per Win: 18.0
+Avg Info Gain: 0.099
+
+32B Performance Across Datasets:
+------------------------------
+
+Dataset: 8 things (C = 8)
+Win Rate: 80.00%
+Avg Turns per Win: 8.5
+Avg Info Gain: 0.238
+
+Dataset: 16 things (C = 16)
+Win Rate: 50.00%
+Avg Turns per Win: 13.0
+Avg Info Gain: 0.234
+
+Dataset: bigbench (C = 29)
+Win Rate: 20.00%
+Avg Turns per Win: 12.5
+Avg Info Gain: 0.172
+
+7B vs 32B Comparison:
+------------------------------
+
+Dataset: 8 things (C = 8)
+
+7B:
+Win Rate: 10.00%
+Avg Turns per Win: 19.0
+Avg Info Gain: 0.119
+
+32B:
+Win Rate: 80.00%
+Avg Turns per Win: 8.5
+Avg Info Gain: 0.238
+
+Dataset: 16 things (C = 16)
+
+7B:
+Win Rate: 20.00%
+Avg Turns per Win: 4.5
+Avg Info Gain: 0.173
+
+32B:
+Win Rate: 50.00%
+Avg Turns per Win: 13.0
+Avg Info Gain: 0.234
+
+Dataset: bigbench (C = 29)
+
+7B:
+Win Rate: 10.00%
+Avg Turns per Win: 18.0
+Avg Info Gain: 0.099
+
+32B:
+Win Rate: 20.00%
+Avg Turns per Win: 12.5
+Avg Info Gain: 0.172

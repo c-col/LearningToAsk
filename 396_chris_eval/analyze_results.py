@@ -348,6 +348,60 @@ def save_game_analysis(game_idx: str, game: Dict, model: str, dataset: str, outp
         
     return json_filename
 
+def save_performance_analysis(results, datasets, models, analysis_dir):
+    """Save model performance analysis to a text file.
+    
+    Args:
+        results: Dictionary of results
+        datasets: List of dataset names
+        models: List of model names
+        analysis_dir: Directory to save analysis
+    """
+    output = []
+    
+    # Title
+    output.append("Model Performance Analysis")
+    output.append("=" * 50)
+    
+    # 7B Performance Across Datasets
+    output.append("\n7B Performance Across Datasets:")
+    output.append("-" * 30)
+    for dataset in datasets:
+        win_rate, turns, info_gain, ideal_info_gain = results["7B"][dataset]
+        output.append(f"\nDataset: {dataset}")
+        output.append(f"Win Rate: {win_rate:.2%}")
+        output.append(f"Avg Turns per Win: {turns:.1f}")
+        output.append(f"Avg Info Gain: {info_gain:.3f}")
+
+    # 32B Performance Across Datasets
+    output.append("\n32B Performance Across Datasets:")
+    output.append("-" * 30)
+    for dataset in datasets:
+        win_rate, turns, info_gain, ideal_info_gain = results["32B"][dataset]
+        output.append(f"\nDataset: {dataset}")
+        output.append(f"Win Rate: {win_rate:.2%}")
+        output.append(f"Avg Turns per Win: {turns:.1f}")
+        output.append(f"Avg Info Gain: {info_gain:.3f}")
+    
+    # Compare 7B vs 32B on each dataset
+    output.append("\n7B vs 32B Comparison:")
+    output.append("-" * 30)
+    for dataset in datasets:
+        output.append(f"\nDataset: {dataset}")
+        for model in models:
+            win_rate, turns, info_gain, ideal_info_gain = results[model][dataset]
+            output.append(f"\n{model}:")
+            output.append(f"Win Rate: {win_rate:.2%}")
+            output.append(f"Avg Turns per Win: {turns:.1f}")
+            output.append(f"Avg Info Gain: {info_gain:.3f}")
+    
+    # Save to file
+    filepath = analysis_dir / "model_performance_analysis.txt"
+    with open(filepath, 'w') as f:
+        f.write('\n'.join(output))
+    
+    return filepath
+
 def main():
     base_dir = "../data/game_sets/test/outputs"
     models = ["7B", "32B"]
@@ -357,9 +411,12 @@ def main():
     plots_dir = Path("../data/game_sets/test/outputs/plots")
     failed_games_dir = Path("../data/game_sets/test/outputs/failed_games")
     successful_games_dir = Path("../data/game_sets/test/outputs/successful_games")
+    analysis_dir = Path("../data/game_sets/test/outputs/analysis")
+    
     plots_dir.mkdir(exist_ok=True)
     failed_games_dir.mkdir(exist_ok=True)
     successful_games_dir.mkdir(exist_ok=True)
+    analysis_dir.mkdir(exist_ok=True)
 
     # Collect results and find games
     results = {model: {} for model in models}
@@ -396,7 +453,7 @@ def main():
     if not successful_games_found:
         print("\nNo successful games found.")
     
-    # Print analysis
+    # Print and save analysis
     print("\nModel Performance Analysis")
     print("=" * 50)
     
@@ -431,6 +488,10 @@ def main():
             print(f"Win Rate: {win_rate:.2%}")
             print(f"Avg Turns per Win: {turns:.1f}")
             print(f"Avg Info Gain: {info_gain:.3f}")
+    
+    # Save analysis to file
+    analysis_file = save_performance_analysis(results, datasets, models, analysis_dir)
+    print(f"\nAnalysis saved to: {analysis_file}")
     
     # Generate plots
     plot_model_comparison(results, plots_dir)
